@@ -4,6 +4,8 @@ import javax.swing.*;
 
 public class Main extends JFrame {
 
+  private int status;
+
   public static void main(String[] args) {
     new Main();
   }
