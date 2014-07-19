@@ -2,7 +2,8 @@ package duel;
 
 import java.net.*;
 import java.io.*;
-import java.awt.*;
+
+import drawing.Drawing;
 
 public class Word {
 
@@ -54,11 +55,11 @@ public class Word {
     return every ? 1 : (any ? 0 : -1);
   }
 
-  public void render(Graphics2D g, int x, int y) {
-    int ny = y;
+  public Drawing[] getDrawings() {
+    Drawing[] results = new Drawing[letters.length];
     for (int i = 0; i < letters.length; i++) {
-      letters[i].render(g, x, ny);
-      ny += Letter.SIZE;
+      results[i] = letters[i].getDrawing();
     }
+    return results;
   }
 }

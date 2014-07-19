@@ -1,6 +1,8 @@
 package duel;
 
 import java.awt.*;
+import drawing.Drawing;
+import drawing.LetterDrawing;
 
 public class Letter {
 
@@ -67,7 +69,7 @@ public class Letter {
     return this.status == Status.REVEALED;
   }
 
-  public void render(Graphics2D g, int x, int y) {
-    //TODO
+  public Drawing getDrawing() {
+    return new LetterDrawing(owner.getColor(), revealed() ? new Character(letter) : null, status);
   }
 }

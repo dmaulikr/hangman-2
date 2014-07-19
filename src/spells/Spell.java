@@ -6,7 +6,7 @@ import java.util.*;
 public class Spell implements Serializable {
   
   private String name;
-  private float manaCost;
+  private double manaCost;
   private int iconCode;
 
   private Set<Requirement> costs;

@@ -1,0 +1,17 @@
+<project name="theHangmand" default="compile">
+    <target name="compile">
+        <mkdir dir="bin"/>
+        <javac srcdir="src" destdir="bin"/>
+    </target>
+    <target name="run" depends="compile">
+        <java classname="game.Main" fork="yes" dir="bin"/>
+    </target>
+    <target name="dist" depends="compile">
+       <mkdir dir="dist"/>
+       <jar destfile="dist/hangman.jar" basedir="bin">
+            <manifest>
+                <attribute name="Main-Class" value="game.Main"/>
+            </manifest>
+       </jar>
+    </target>
+</project>
