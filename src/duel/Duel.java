@@ -4,7 +4,7 @@ import java.util.*;
 
 import game.Profile;
 import drawing.*;
-import hub.ConfiguredPlayer;
+import client.ConfiguredPlayer;
 
 public class Duel {
 
@@ -16,7 +16,7 @@ public class Duel {
 
   public Duel(DuelOptions options, List<ConfiguredPlayer> profiles) {
     this.options = options;
-    Color[] colors = this.options.getColorOrder();
+    PlayerColor[] colors = this.options.getColorOrder();
     if (profiles.size() > colors.length) {
       throw new IllegalArgumentException("You can't have more players than colors.");
     }

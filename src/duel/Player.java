@@ -17,12 +17,12 @@ public class Player {
   private double mana;
   private int lives;
 
-  private Color color;
+  private PlayerColor color;
 
   //synced drawings
   private Screen screen;
 
-  public Player(DuelOptions options, Profile profile, Color color, List<Spell> spells) {
+  public Player(DuelOptions options, Profile profile, PlayerColor color, List<Spell> spells) {
     if (spells.size() > options.getSpellSize()) {
       throw new IllegalArgumentException("Must have at max " + options.getSpellSize() + " spells");
     }
@@ -49,7 +49,7 @@ public class Player {
     return this.profile;
   }
 
-  public Color getColor() {
+  public PlayerColor getColor() {
     return color;
   }
 

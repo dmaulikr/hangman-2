@@ -1,4 +1,4 @@
-package hub;
+package client;
 
 import java.util.List;
 

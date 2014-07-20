@@ -1,6 +1,6 @@
 package duel;
 
-import drawing.Color;
+import drawing.PlayerColor;
 
 public class DuelOptions {
   
@@ -8,9 +8,9 @@ public class DuelOptions {
   private double startingMana;
   private int spellSize;
 
-  private Color[] colorOrder;
+  private PlayerColor[] colorOrder;
 
-  public Color[] getColorOrder() {
+  public PlayerColor[] getColorOrder() {
     return this.colorOrder;
   }
 

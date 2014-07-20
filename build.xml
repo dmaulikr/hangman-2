@@ -1,17 +1,58 @@
-<project name="theHangmand" default="compile">
-    <target name="compile">
-        <mkdir dir="bin"/>
-        <javac srcdir="src" destdir="bin"/>
+<project name="theHangmand" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="src.dir" value="src" />
+    <property name="build.dir" value="build" />
+    <property name="dist.dir" value="dist" />
+    <property name="lib.dir" value="lib" />
+    <property name="res.dir" value="res" />
+    <property name="dist.jar" value="hangman.jar" />
+
+    <path id="classpath.build">
+        <fileset dir="${lib.dir}">
+            <include name="**" />
+        </fileset>
+    </path>
+
+    <manifestclasspath property="lib.list" jarfile="${dist.dir}/${dist.jar}">
+        <classpath refid="classpath.build" />
+    </manifestclasspath>
+
+    <target name="dep">
+        <ivy:retrieve />
     </target>
-    <target name="run" depends="compile">
-        <java classname="game.Main" fork="yes" dir="bin"/>
+    <target name="i18n">
+        <exec executable="ruby">
+            <arg value="i18n/parse.rb" />
+        </exec>
+    </target>
+    <target name="compile" depends="dep,i18n">
+        <delete dir="${build.dir}" />
+        <mkdir dir="${build.dir}" />
+        <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+            <compilerarg value="-Xlint:unchecked" />
+            <classpath refid="classpath.build" />
+        </javac>
+    </target>
+    <target name="run" depends="dist">
+        <java jar="${dist.dir}/${dist.jar}" fork="yes" />
     </target>
     <target name="dist" depends="compile">
-       <mkdir dir="dist"/>
-       <jar destfile="dist/hangman.jar" basedir="bin">
+       <delete dir="${dist.dir}" />
+       <mkdir dir="${dist.dir}" />
+       <jar destfile="${dist.dir}/${dist.jar}" basedir="${build.dir}">
             <manifest>
-                <attribute name="Main-Class" value="game.Main"/>
+                <attribute name="Main-Class" value="game.Main" />
+                <attribute name="Class-Path" value="${lib.list}" />
             </manifest>
+
+            <zipfileset dir="i18n/build" prefix="i18n" />
+            <fileset dir=".">
+                <include name="${lib.dir}/**" />
+            </fileset>
+            <fileset dir=".">
+                <include name="${res.dir}/**"/>
+                <exclude name="**/readme"/>
+            </fileset>
        </jar>
     </target>
 </project>

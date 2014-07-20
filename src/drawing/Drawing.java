@@ -5,9 +5,9 @@ import java.awt.Graphics2D;
 
 public abstract class Drawing implements Serializable {
 
-  private Color ownerColor;
+  private PlayerColor ownerColor;
 
-  public Drawing(Color ownerColor) {
+  public Drawing(PlayerColor ownerColor) {
     this.ownerColor = ownerColor;
   }
 

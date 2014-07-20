@@ -9,7 +9,7 @@ public class SpellDrawing extends Drawing {
   private Spell spell;
   private Letter.Status status;
 
-  public SpellDrawing(Color color, Spell spell, Letter.Status status) {
+  public SpellDrawing(PlayerColor color, Spell spell, Letter.Status status) {
     super(color);
     this.spell = spell;
     this.status = status;

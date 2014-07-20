@@ -1,0 +1,7 @@
+main:
+  title: 'the Hangman'
+  menu:
+    host: 'Hospedar servidor'
+    connect: 'Conectar ao servidor'
+    options: 'Opções gerais'
+    exit: 'Sair'
