@@ -27,33 +27,41 @@ public class TexturePack {
     g.setFont(fontsMapping.get(f));
   }
 
-  public void drawString(Graphics2D g, String text, int x, int y) {
-    drawString(g, text, x, y, Aligment.START, Aligment.START);
+  public java.awt.Rectangle drawString(Graphics2D g, String text, int x, int y) {
+    return drawString(g, text, x, y, Aligment.START, Aligment.START);
   }
 
-  public void drawString(Graphics2D g, String text, int x, int y, Aligment horizontal, Aligment vertical) {
-    java.awt.FontMetrics fm = g.getFontMetrics();
-    int hp = horizontal.getHorizontalMultiplier(), vp = vertical.getVerticalMultiplier();
-    g.drawString(text, x + (hp)*fm.stringWidth(text)/2, y + (vp)*fm.getHeight()/2);
+  public java.awt.Rectangle drawString(Graphics2D g, String text, int x, int y, Aligment horizontal, Aligment vertical) {
+    int hm = horizontal.getMultiplier(), vm = vertical.getMultiplier();
+
+    int width, height;
+    {
+      java.awt.FontMetrics fm = g.getFontMetrics();
+      width = fm.stringWidth(text);
+      height = fm.getHeight();
+    }
+
+    int startX = x + hm*width/2;
+    int startY = y + vm*height/2;
+    int middleY = startY + height/2;
+    g.drawString(text, startX, middleY);
+
+    return new java.awt.Rectangle(startX, startY - height/2, width, height);
   }
 
   public enum Aligment {
-    START(0, 1), MIDDLE(-1, 0), END(-2, -1);
+    START(0), MIDDLE(-1), END(-2);
 
-    private int hm, vm;
+    private int multiplier;
 
-    private Aligment(int hm, int vm) {
-      this.hm = hm;
-      this.vm = vm;
+    private Aligment(int multiplier) {
+      this.multiplier = multiplier;
     }
 
-    public int getHorizontalMultiplier() {
-      return this.hm;
+    int getMultiplier() {
+      return this.multiplier;
     }
 
-    public int getVerticalMultiplier() {
-      return this.vm;
-    }
   }
 
   public static class BadPackException extends Exception {
