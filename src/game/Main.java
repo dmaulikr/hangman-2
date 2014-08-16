@@ -19,11 +19,8 @@ public class Main extends Application {
 
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-  // 1 - client | 2 - server | 3 - both
-  private static int mode;
-
-  private GameStatus status;
-  private Scene scene;
+  private static int mode; // 1 - client | 2 - server | 3 - both
+  private Stage stage;
 
   public static void halt(String message) {
     System.err.println(message);
@@ -55,19 +52,17 @@ public class Main extends Application {
 
   @Override
   public void start(Stage stage) {
-    setStatus(GameStatus.MAIN);
-
-    stage.setTitle(I18n.t("main.title"));
-    stage.setScene(scene);
-    stage.show();
+    this.stage = stage;
+    this.stage.setTitle(I18n.t("main.title"));
+    this.setStatus(GameStatus.MAIN);
+    this.stage.show();
   }
 
-  public void setStatus(GameStatus newStatus) {
-    status = newStatus;
+  public void setStatus(GameStatus status) {
     if (status == GameStatus.QUIT) {
       Platform.exit();
     } else {
-      scene = status.getNewScene();
+      this.stage.setScene(status.getNewScene(this).generateScene());
     }
   }
 }

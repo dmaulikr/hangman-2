@@ -1,6 +1,6 @@
 package game;
 
-import javafx.scene.Scene;
+import java.lang.reflect.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,19 +13,21 @@ public enum GameStatus {
 
   private static final Logger logger = LoggerFactory.getLogger(GameStatus.class);
 
-  private Class<? extends Scene> sceneClass;
+  private Class<? extends DefaultScene> sceneClass;
 
   private GameStatus() {
     this(null);
   }
 
-  private GameStatus(Class<? extends Scene> sceneClass) {
+  private GameStatus(Class<? extends DefaultScene> sceneClass) {
     this.sceneClass = sceneClass;
   }
 
-  public Scene getNewScene() {
+  public DefaultScene getNewScene(Main mainRef) {
     try {
-      return sceneClass.newInstance();
+      DefaultScene scene = sceneClass.newInstance();
+      scene.setMain(mainRef);
+      return scene;
     } catch (IllegalAccessException | InstantiationException ex) {
       logger.error("Scene subclass must have public default constructor.", ex);
       System.exit(1);

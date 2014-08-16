@@ -1,3 +1,6 @@
+common:
+  cancel: 'Cancel'
+  save: 'Save'
 main:
   title: 'the Hangman'
   menu:
@@ -5,3 +8,7 @@ main:
     connect: 'Connect to server'
     options: 'General options'
     exit: 'Exit'
+options:
+  width: 'Width'
+  height: 'Height'
+  locale: 'Language'
