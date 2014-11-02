@@ -81,7 +81,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>generate-test-sources</id>
+						<id>generate-i18n</id>
 						<configuration>
 							<executable>ruby</executable>
 							<workingDirectory>src/main/resources/xyz/luan/games/hangman/i18n/parser</workingDirectory>
@@ -89,9 +89,9 @@
 								<argument>parse.rb</argument>
 							</arguments>
 						</configuration>
-						<phase>generate-test-sources</phase>
+						<phase>generate-i18n</phase>
 						<goals>
-							<goal>exec</goal>
+							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>
