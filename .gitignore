@@ -1,4 +1,5 @@
 build/
 dist/
 lib/
-i18n/build/
+resources/xyz/luan/games/hangman/i18n/*.json
+target/

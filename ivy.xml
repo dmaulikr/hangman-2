@@ -1,8 +1,0 @@
-<ivy-module version="2.0">
-    <info organisation="com.wordpress.luansoftwares" module="hangman"/>
-    <dependencies>
-        <dependency org="com.eclipsesource.minimal-json" name="minimal-json" rev="0.9.1" />
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.7" />
-        <dependency org="org.slf4j" name="slf4j-jdk14" rev="1.7.7" />
-    </dependencies>
-</ivy-module>
