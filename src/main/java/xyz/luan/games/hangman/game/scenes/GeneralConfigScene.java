@@ -45,14 +45,14 @@ public class GeneralConfigScene extends DefaultScene {
                     ConfigManager.general.config().set(FIELD_NAMES[i], fields[i].getText());
                 } catch (InvalidFormException ex) {
                     ok = false;
-                    // TODO put on screen
-                System.out.println(ex.getErrorMessage(getFieldName(i)));
+                    /* TODO put on screen */
+                    System.out.println(ex.getErrorMessage(getFieldName(i)));
+                }
             }
-        }
-        if (ok) {
-            mainRef.setStatus(GameStatus.MAIN);
-        }
-    }   ), 1, FIELD_NAMES.length + 1);
+            if (ok) {
+                mainRef.setStatus(GameStatus.MAIN);
+            }
+        }), 1, FIELD_NAMES.length + 1);
 
         return grid;
     }

@@ -59,7 +59,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>resources</directory>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 		<plugins>
@@ -84,7 +84,7 @@
 						<id>generate-test-sources</id>
 						<configuration>
 							<executable>ruby</executable>
-							<workingDirectory>resources/xyz/luan/games/hangman/i18n/parser</workingDirectory>
+							<workingDirectory>src/main/resources/xyz/luan/games/hangman/i18n/parser</workingDirectory>
 							<arguments>
 								<argument>parse.rb</argument>
 							</arguments>

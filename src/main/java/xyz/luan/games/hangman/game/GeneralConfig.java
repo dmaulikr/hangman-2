@@ -52,9 +52,7 @@ public class GeneralConfig {
             this.height = toNatural(value);
             break;
         case "locale":
-            System.out.println(value);
             this.locale = Locale.forLanguageTag(value);
-            System.out.println(this.locale);
             break;
         default:
             throw new RuntimeException("Invalid field access on GeneralConfig: " + field);
