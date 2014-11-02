@@ -1,7 +1,7 @@
 build/
 dist/
 lib/
-resources/xyz/luan/games/hangman/i18n/*.json
+src/main/resources/xyz/luan/games/hangman/i18n/*.json
 target/
 .settings
 .classpath
