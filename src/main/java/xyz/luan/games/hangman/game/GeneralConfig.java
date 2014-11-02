@@ -1,12 +1,16 @@
 package xyz.luan.games.hangman.game;
 
+import static xyz.luan.games.hangman.game.forms.FormValidations.toNatural;
+
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
 import xyz.luan.games.hangman.game.forms.InvalidFormException;
-import static xyz.luan.games.hangman.game.forms.FormValidations.*;
 
-public class GeneralConfig {
+public class GeneralConfig implements Serializable {
+
+    private static final long serialVersionUID = 5000816012875101792L;
 
     private int width, height;
     private Locale locale;
@@ -53,6 +57,7 @@ public class GeneralConfig {
             break;
         case "locale":
             this.locale = Locale.forLanguageTag(value);
+            I18n.load(this.locale);
             break;
         default:
             throw new RuntimeException("Invalid field access on GeneralConfig: " + field);

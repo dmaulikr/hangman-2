@@ -1,24 +1,30 @@
 package xyz.luan.games.hangman.game.scenes;
 
-import xyz.luan.games.hangman.game.ConfigManager;
-import xyz.luan.games.hangman.game.GameStatus;
-import xyz.luan.games.hangman.game.I18n;
-import xyz.luan.games.hangman.game.forms.FormUtils;
-import xyz.luan.games.hangman.game.forms.InvalidFormException;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import xyz.luan.games.hangman.game.ConfigManager;
+import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.I18n;
+import xyz.luan.games.hangman.game.forms.FormComponent;
+import xyz.luan.games.hangman.game.forms.FormUtils;
+import xyz.luan.games.hangman.game.forms.InvalidFormException;
+import xyz.luan.games.hangman.game.forms.fields.FormField;
+import xyz.luan.games.hangman.game.forms.fields.OptionFormField;
 
 public class GeneralConfigScene extends DefaultScene {
 
-    private TextField[] fields;
+    private static final FormComponent[] FIELDS = {
+        new FormComponent("width"),
+        new FormComponent("height"),
+        new FormComponent("locale", () -> new OptionFormField(I18n.validLocales()))
+    };
 
-    private static final String[] FIELD_NAMES = { "width", "height", "locale" };
+    private FormField[] fields;
 
     private static String getFieldName(int field) {
-        return I18n.t("options." + FIELD_NAMES[field]);
+        return I18n.t("options." + FIELDS[field].getName());
     }
 
     @Override
@@ -29,20 +35,21 @@ public class GeneralConfigScene extends DefaultScene {
         sceneTitle.getStyleClass().add("title");
         grid.add(sceneTitle, 0, 0, 2, 1);
 
-        fields = new TextField[FIELD_NAMES.length];
+        fields = new FormField[FIELDS.length];
         for (int i = 0; i < fields.length; i++) {
             grid.add(new Label(getFieldName(i)), 0, i + 1);
-            fields[i] = new TextField();
-            fields[i].setText(ConfigManager.general.config().get(FIELD_NAMES[i]));
-            grid.add(fields[i], 1, i + 1);
+
+            fields[i] = FIELDS[i].generate();
+            fields[i].setFormValue(ConfigManager.general.config().get(FIELDS[i].getName()));
+            grid.add(fields[i].getAsNode(), 1, i + 1);
         }
 
-        grid.add(new StateChangeButton("common.cancel", GameStatus.MAIN, mainRef), 0, FIELD_NAMES.length + 1);
+        grid.add(new StateChangeButton("common.cancel", GameStatus.MAIN, mainRef), 0, FIELDS.length + 1);
         grid.add(new StateChangeButton("common.save", event -> {
             boolean ok = true;
             for (int i = 0; i < fields.length; i++) {
                 try {
-                    ConfigManager.general.config().set(FIELD_NAMES[i], fields[i].getText());
+                    ConfigManager.general.config().set(FIELDS[i].getName(), fields[i].getFormValue());
                 } catch (InvalidFormException ex) {
                     ok = false;
                     /* TODO put on screen */
@@ -50,11 +57,11 @@ public class GeneralConfigScene extends DefaultScene {
                 }
             }
             if (ok) {
+                ConfigManager.general.save();
                 mainRef.setStatus(GameStatus.MAIN);
             }
-        }), 1, FIELD_NAMES.length + 1);
+        }), 1, FIELDS.length + 1);
 
         return grid;
     }
-
 }
