@@ -7,10 +7,18 @@ import xyz.luan.games.hangman.game.scenes.DefaultScene;
 import xyz.luan.games.hangman.game.scenes.GeneralConfigScene;
 import xyz.luan.games.hangman.game.scenes.HostServerScene;
 import xyz.luan.games.hangman.game.scenes.MenuScene;
+import xyz.luan.games.hangman.game.scenes.ServerConfigScene;
 
 public enum GameStatus {
 
-    MAIN(MenuScene.class), HOSTING(HostServerScene.class), CONNECT, GENERAL_CONFIG(GeneralConfigScene.class), CLIENT_CONFIG, SERVER_CONFIG, GAME, QUIT;
+    MAIN(MenuScene.class),
+    HOSTING(HostServerScene.class),
+    CONNECT,
+    GENERAL_CONFIG(GeneralConfigScene.class),
+    CLIENT_CONFIG,
+    SERVER_CONFIG(ServerConfigScene.class),
+    GAME,
+    QUIT;
 
     private static final Logger logger = LoggerFactory.getLogger(GameStatus.class);
 

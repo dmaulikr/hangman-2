@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 import org.slf4j.Logger;
@@ -39,16 +40,17 @@ public final class ConfigManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static class Manager<T> {
+    public static class Manager<T extends Serializable> {
 
         private String filename;
         private T config = null;
 
+        @SuppressWarnings("unchecked")
         public Class<T> getPersistentClass() {
             return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         }
 
+        @SuppressWarnings("unchecked")
         public Manager(String filename, Class<T> clazz) {
             this.filename = filename;
             File file = getFile();

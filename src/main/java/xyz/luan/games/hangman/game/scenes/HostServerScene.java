@@ -22,10 +22,12 @@ public class HostServerScene extends DefaultScene {
         grid.add(new Label("blah"), 1, 1);
 
         Button button = new Button("hue");
-        grid.add(button, 1, 0, 2, 1);
+        grid.add(button, 0, 2);
+        Button button2 = new Button("hues");
+        grid.add(button2, 1, 2);
 
         Label status = new Label("status...");
-        grid.add(status, 3, 0, 2, 1);
+        grid.add(status, 0, 3, 2, 1);
 
         return grid;
     }

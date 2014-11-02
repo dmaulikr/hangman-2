@@ -12,3 +12,5 @@ options:
   width: 'Largura'
   height: 'Altura'
   locale: 'Idioma'
+host:
+  config: 'Configurações de hospedagem'
