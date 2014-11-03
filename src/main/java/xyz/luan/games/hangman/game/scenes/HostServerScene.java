@@ -1,5 +1,8 @@
 package xyz.luan.games.hangman.game.scenes;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -18,18 +21,26 @@ public class HostServerScene extends DefaultScene {
         sceneTitle.getStyleClass().add("title");
         grid.add(sceneTitle, 0, 0, 2, 1);
 
-        grid.add(new Label("My ip:"), 0, 1);
-        grid.add(new Label("blah"), 1, 1);
+        grid.add(new Label("My IP:"), 0, 1);
+        grid.add(new Label(getMyIp()), 1, 1);
 
-        Button button = new Button("hue");
-        grid.add(button, 0, 2);
-        Button button2 = new Button("hues");
-        grid.add(button2, 1, 2);
+        Button hostButton = new Button("Host");
+        grid.add(hostButton, 0, 2);
+        Button cancelButton = new Button("Cancel");
+        grid.add(cancelButton, 1, 2);
 
         Label status = new Label("status...");
         grid.add(status, 0, 3, 2, 1);
 
         return grid;
+    }
+
+    private String getMyIp() {
+        try {
+            return Inet4Address.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Invalid hoster?", e);
+        }
     }
 
 }
