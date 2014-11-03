@@ -14,3 +14,4 @@ options:
   locale: 'Idioma'
 host:
   config: 'Configurações de hospedagem'
+  host: 'Hospedar'

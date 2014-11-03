@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import xyz.luan.games.hangman.game.GameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 
@@ -24,13 +25,18 @@ public class HostServerScene extends DefaultScene {
         grid.add(new Label("My IP:"), 0, 1);
         grid.add(new Label(getMyIp()), 1, 1);
 
-        Button hostButton = new Button("Host");
+        Button hostButton = new Button(I18n.t("host.host"));
         grid.add(hostButton, 0, 2);
-        Button cancelButton = new Button("Cancel");
+        StateChangeButton cancelButton = new StateChangeButton("common.cancel", GameStatus.MAIN, mainRef);
         grid.add(cancelButton, 1, 2);
 
-        Label status = new Label("status...");
+        final Label status = new Label();
         grid.add(status, 0, 3, 2, 1);
+
+        hostButton.setOnAction(e -> {
+            status.setText("Hosting...");
+            // TODO
+        });
 
         return grid;
     }
