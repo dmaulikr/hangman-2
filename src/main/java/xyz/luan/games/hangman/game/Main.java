@@ -3,10 +3,14 @@ package xyz.luan.games.hangman.game;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import xyz.luan.games.hangman.client.ClientHandler;
+import xyz.luan.games.hangman.game.scenes.DefaultScene;
+import xyz.luan.games.hangman.game.scenes.Lobby;
 
 public class Main extends Application {
 
     private static int mode; // 1 - client | 2 - server | 3 - both
+    private DefaultScene scene;
     private Stage stage;
 
     public static void halt(String message) {
@@ -41,7 +45,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         this.stage = stage;
         this.stage.setTitle(I18n.t("main.title"));
-        this.setStatus(GameStatus.MAIN);
+        this.setStatus(GameStatus.MAIN_MENU);
         this.stage.show();
     }
 
@@ -49,7 +53,13 @@ public class Main extends Application {
         if (status == GameStatus.QUIT) {
             Platform.exit();
         } else {
-            this.stage.setScene(status.getNewScene(this).generateScene());
+            this.scene = status.getNewScene(this);
+            this.stage.setScene(scene.generateScene());
         }
+    }
+
+    public void connect(ClientHandler handler) {
+        setStatus(GameStatus.CLIENT_LOBBY);
+        ((Lobby) scene).setClientHandler(handler);
     }
 }

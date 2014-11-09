@@ -13,11 +13,13 @@ public class GeneralConfig implements Serializable {
     private static final long serialVersionUID = 5000816012875101792L;
 
     private int width, height;
+    private int port;
     private Locale locale;
 
     public GeneralConfig() {
         this.width = 800;
         this.height = 600;
+        this.port = 10000;
         this.locale = Locale.forLanguageTag("en-Us");
     }
 
@@ -31,6 +33,10 @@ public class GeneralConfig implements Serializable {
 
     public int getScreenHeight() {
         return this.height;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public String get(String field) {
@@ -55,6 +61,9 @@ public class GeneralConfig implements Serializable {
         case "height":
             this.height = toNatural(value);
             break;
+        case "port":
+            this.port = toNatural(value);
+            break;
         case "locale":
             this.locale = Locale.forLanguageTag(value);
             I18n.load(this.locale);
@@ -63,5 +72,4 @@ public class GeneralConfig implements Serializable {
             throw new RuntimeException("Invalid field access on GeneralConfig: " + field);
         }
     }
-
 }

@@ -36,7 +36,7 @@ public abstract class DefaultForm extends DefaultScene {
             grid.add(fields[i].getAsNode(), 1, i + 2);
         }
 
-        grid.add(new StateChangeButton("common.cancel", GameStatus.MAIN, mainRef), 0, components.length + 2);
+        grid.add(cancelButton(), 0, components.length + 2);
         grid.add(new StateChangeButton("common.save", event -> {
             this.errors.setText("");
             boolean allOk = true;
@@ -55,6 +55,10 @@ public abstract class DefaultForm extends DefaultScene {
         }), 1, getComponents().length + 2);
 
         return grid;
+    }
+
+    protected StateChangeButton cancelButton() {
+        return new StateChangeButton("common.cancel", GameStatus.MAIN_MENU);
     }
 
     protected abstract String title();

@@ -5,26 +5,25 @@ import xyz.luan.games.hangman.game.GameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormComponent;
 import xyz.luan.games.hangman.game.forms.InvalidFormException;
-import xyz.luan.games.hangman.game.forms.fields.OptionFormField;
 
-public class GeneralConfigScene extends DefaultForm {
+public class ClientConfigScene extends DefaultForm {
 
-    private static final FormComponent[] FIELDS = {
-        new FormComponent("width"),
-        new FormComponent("height"),
-        new FormComponent("port"),
-        new FormComponent("locale", () -> new OptionFormField(I18n.validLocales()))
-    };
+    private static final FormComponent[] FIELDS = {};
+
+    @Override
+    protected StateChangeButton cancelButton() {
+        return new StateChangeButton("common.cancel", GameStatus.CONNECT_TO_SERVER);
+    }
 
     @Override
     protected String getFieldName(int field) {
-        return I18n.t("options." + FIELDS[field].getName());
+        return I18n.t("client.configs." + FIELDS[field].getName());
     }
 
     @Override
     protected void onOkHook() {
-        ConfigManager.general.save();
-        mainRef.setStatus(GameStatus.MAIN_MENU);
+        ConfigManager.client.save();
+        mainRef.setStatus(GameStatus.CONNECT_TO_SERVER);
     }
 
     @Override
@@ -34,16 +33,16 @@ public class GeneralConfigScene extends DefaultForm {
 
     @Override
     protected void set(String name, String value) throws InvalidFormException {
-        ConfigManager.general.config().set(name, value);
+        ConfigManager.client.config().set(name, value);
     }
 
     @Override
     protected String get(String name) {
-        return ConfigManager.general.config().get(name);
+        return ConfigManager.client.config().get(name);
     }
 
     @Override
     protected String title() {
-        return "main.menu.options";
+        return "client.config";
     }
 }

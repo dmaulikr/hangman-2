@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 
 public class MenuScene extends DefaultScene {
     private static final String[] ITEMS = { "host", "connect", "options", "exit" };
-    private static final GameStatus[] ACTIONS = { GameStatus.SERVER_CONFIG, GameStatus.CONNECT, GameStatus.GENERAL_CONFIG, GameStatus.QUIT };
+    private static final GameStatus[] ACTIONS = { GameStatus.SERVER_CONFIG, GameStatus.CONNECT_TO_SERVER, GameStatus.GENERAL_CONFIG, GameStatus.QUIT };
 
     @Override
     protected Pane generatePane() {
@@ -21,7 +21,7 @@ public class MenuScene extends DefaultScene {
 
         assert ITEMS.length == ACTIONS.length;
         for (int i = 0; i < ITEMS.length; i++) {
-            grid.add(new StateChangeButton("main.menu." + ITEMS[i], ACTIONS[i], mainRef), 0, i + 1);
+            grid.add(new StateChangeButton("main.menu." + ITEMS[i], ACTIONS[i]), 0, i + 1);
         }
 
         return grid;

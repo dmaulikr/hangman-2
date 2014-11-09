@@ -18,7 +18,7 @@ public class ServerConfigScene extends DefaultForm {
     @Override
     protected void onOkHook() {
         ConfigManager.server.save();
-        mainRef.setStatus(GameStatus.HOSTING);
+        mainRef.setStatus(GameStatus.HOSTING_SERVER);
     }
 
     @Override

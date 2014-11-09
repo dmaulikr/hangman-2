@@ -3,20 +3,24 @@ package xyz.luan.games.hangman.game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.luan.games.hangman.game.scenes.ClientConfigScene;
+import xyz.luan.games.hangman.game.scenes.ClientConnectScene;
 import xyz.luan.games.hangman.game.scenes.DefaultScene;
 import xyz.luan.games.hangman.game.scenes.GeneralConfigScene;
 import xyz.luan.games.hangman.game.scenes.HostServerScene;
+import xyz.luan.games.hangman.game.scenes.Lobby;
 import xyz.luan.games.hangman.game.scenes.MenuScene;
 import xyz.luan.games.hangman.game.scenes.ServerConfigScene;
 
 public enum GameStatus {
 
-    MAIN(MenuScene.class),
-    HOSTING(HostServerScene.class),
-    CONNECT,
+    MAIN_MENU(MenuScene.class),
+    HOSTING_SERVER(HostServerScene.class),
+    CONNECT_TO_SERVER(ClientConnectScene.class),
     GENERAL_CONFIG(GeneralConfigScene.class),
-    CLIENT_CONFIG,
+    CLIENT_CONFIG(ClientConfigScene.class),
     SERVER_CONFIG(ServerConfigScene.class),
+    CLIENT_LOBBY(Lobby.class),
     GAME,
     QUIT;
 
