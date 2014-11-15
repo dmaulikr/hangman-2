@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -18,6 +19,7 @@ import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.DialogHelper;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.server.ServerHandler;
+import xyz.luan.games.hangman.server.ServerHandler.ClientHandler;
 
 public class HostServerScene extends DefaultScene {
 
@@ -25,8 +27,11 @@ public class HostServerScene extends DefaultScene {
 
     private TextField portText;
     private Label status;
-    private Button hostButton;
-    private GridPane hostingData;
+    private Button hostButton, cancelButton;
+    
+    private GridPane hostingDataPane;
+    private ListView<ClientHandler> listView;
+    private FXConnectionListener fxConnectionListener;
 
     @Override
     protected Pane generatePane() {
@@ -47,26 +52,30 @@ public class HostServerScene extends DefaultScene {
         setupHostButtonForStart();
         grid.add(hostButton, 0, 3);
 
-        StateChangeButton cancelButton = new StateChangeButton("common.cancel", event -> {
-            stopServer();
-            mainRef.setStatus(GameStatus.MAIN_MENU);
-        });
+        cancelButton = new StateChangeButton("common.cancel", GameStatus.MAIN_MENU);
         grid.add(cancelButton, 1, 3);
 
         status = new Label();
         grid.add(status, 0, 4, 2, 1);
 
-        hostingData = FormUtils.defaultGrid();
-        hostingData.setVisible(false);
-        grid.add(hostingData, 0, 5, 2, 1);
+        setupHostingDataPane(grid);
 
         return grid;
     }
 
+    private void setupHostingDataPane(GridPane grid) {
+        hostingDataPane = FormUtils.defaultGrid();
+        hostingDataPane.setVisible(false);
+        hostingDataPane.add(new Label("Clients connectd:"), 0, 0);
+        hostingDataPane.add(listView = new ListView<>(), 0, 1);
+        grid.add(hostingDataPane, 0, 5, 2, 1);
+    }
+
     private EventHandler<ActionEvent> stopHandler() {
         return e -> {
+            cancelButton.setDisable(false);
             status.setText("");
-            hostingData.setVisible(false);
+            hostingDataPane.setVisible(false);
             stopServer();
             setupHostButtonForStart();
         };
@@ -83,8 +92,9 @@ public class HostServerScene extends DefaultScene {
                 int port = Integer.parseInt(portText.getText());
                 startServer(port);
                 setupHostButtonForStop();
-                setupHostingData();
+                hostingDataPane.setVisible(true);
                 status.setText("Hosting...");
+                cancelButton.setDisable(true);
             } catch (NumberFormatException ex) {
                 DialogHelper.show("Error!", "Port must be an integer.");
             } catch (IOException ex) {
@@ -93,24 +103,23 @@ public class HostServerScene extends DefaultScene {
         };
     }
 
-    private void setupHostingData() {
-        hostingData.add(new Label("myCustomHostingData!!"), 0, 0);
-        hostingData.setVisible(true);
-    }
-
     private void setupHostButtonForStop() {
-        hostButton.setText(I18n.t("host.cancel"));
+        hostButton.setText(I18n.t("host.stop"));
         hostButton.setOnAction(stopHandler());
     }
 
     private void startServer(int port) throws IOException {
         stopServer();
-        handler = new ServerHandler(port);
+        fxConnectionListener = new FXConnectionListener();
+        fxConnectionListener.bind(listView);
+        handler = new ServerHandler(port, fxConnectionListener);
+        handler.start();
     }
 
     private void stopServer() {
         if (handler != null) {
             handler.quit();
+            fxConnectionListener = null;
         }
     }
 

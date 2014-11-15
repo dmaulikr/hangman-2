@@ -1,10 +1,12 @@
 package xyz.luan.games.hangman.server;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,22 +15,26 @@ import org.slf4j.LoggerFactory;
 
 import xyz.luan.games.hangman.messaging.Message;
 
-public final class ServerHandler {
+public final class ServerHandler extends Thread {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerHandler.class);
 
     private ServerSocket server;
     private List<ClientHandler> handlers;
+    private ConnectionListener listener;
 
-    public ServerHandler(int port) throws IOException {
+    public ServerHandler(int port, ConnectionListener listener) throws IOException {
+        this.listener = listener;
         this.handlers = new ArrayList<>();
         this.server = new ServerSocket(port);
     }
 
+    @Override
     public void run() {
         while (true) {
             try {
                 processSocket(server.accept());
+            } catch (SocketException serverQuitted) {
             } catch (IOException e) {
                 logger.error("Unable to connect to client", e);
             }
@@ -36,16 +42,23 @@ public final class ServerHandler {
     }
 
     public void quit() {
-        for (ClientHandler c : handlers) {
-            c.sendMessage(new Message("Server was shutdown. Bye, bye!"));
-            c.quit();
+        handlers.stream().forEach(c -> c.notifyQuit());
+        closeConnection();
+    }
+
+    private void closeConnection() {
+        try {
+            server.close();
+        } catch (IOException e) {
+            logger.error("Unable to close server socket", e);
         }
     }
 
     private void processSocket(Socket socket) throws IOException {
         ClientHandler handler = new ClientHandler(socket);
         handlers.add(handler);
-        handler.run();
+        listener.connected(handler);
+        handler.start();
     }
 
     public class ClientHandler extends Thread {
@@ -66,6 +79,8 @@ public final class ServerHandler {
                 try {
                     Message m = readMessage();
                     processMessage(m);
+                } catch (EOFException clientQuitted) {
+                    quit();
                 } catch (InvalidCommunicationException ex) {
                     handleError(ex);
                 }
@@ -89,9 +104,11 @@ public final class ServerHandler {
             }
         }
 
-        private Message readMessage() throws InvalidCommunicationException {
+        private Message readMessage() throws EOFException, InvalidCommunicationException {
             try {
                 return (Message) in.readObject();
+            } catch (EOFException e) {
+                throw e;
             } catch (IOException | ClassCastException | ClassNotFoundException e) {
                 throw new InvalidCommunicationException("", e);
             }
@@ -105,10 +122,15 @@ public final class ServerHandler {
             }
         }
 
+        public void notifyQuit() {
+            this.sendMessage(new Message("Server was shutdown. Bye, bye!"));
+            this.running = false;
+        }
+
         public void quit() {
             this.running = false;
             handlers.remove(this);
+            listener.disconnected(this);
         }
     }
-
 }
