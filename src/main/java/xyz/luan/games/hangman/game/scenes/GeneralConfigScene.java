@@ -1,7 +1,7 @@
 package xyz.luan.games.hangman.game.scenes;
 
 import xyz.luan.games.hangman.game.ConfigManager;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormComponent;
 import xyz.luan.games.hangman.game.forms.InvalidFormException;
@@ -24,7 +24,7 @@ public class GeneralConfigScene extends DefaultForm {
     @Override
     protected void onOkHook() {
         ConfigManager.general.save();
-        mainRef.setStatus(GameStatus.MAIN_MENU);
+        mainRef.setStatus(MainGameStatus.MAIN_MENU);
     }
 
     @Override

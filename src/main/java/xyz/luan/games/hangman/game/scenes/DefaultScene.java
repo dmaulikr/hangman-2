@@ -1,7 +1,7 @@
 package xyz.luan.games.hangman.game.scenes;
 
 import xyz.luan.games.hangman.game.ConfigManager;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Main;
 import javafx.event.ActionEvent;
@@ -26,7 +26,7 @@ public abstract class DefaultScene {
 
     public class StateChangeButton extends Button {
 
-        public StateChangeButton(String text, GameStatus newState) {
+        public StateChangeButton(String text, MainGameStatus newState) {
             setup(text, event -> mainRef.setStatus(newState));
         }
 

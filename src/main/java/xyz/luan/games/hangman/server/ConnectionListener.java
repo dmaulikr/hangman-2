@@ -1,6 +1,6 @@
 package xyz.luan.games.hangman.server;
 
-import xyz.luan.games.hangman.server.ServerHandler.ClientHandler;
+import xyz.luan.games.hangman.server.Server.ClientHandler;
 
 public interface ConnectionListener {
 

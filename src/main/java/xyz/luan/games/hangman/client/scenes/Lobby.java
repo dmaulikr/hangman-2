@@ -1,14 +1,12 @@
-package xyz.luan.games.hangman.game.scenes;
+package xyz.luan.games.hangman.client.scenes;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import xyz.luan.games.hangman.client.ClientHandler;
+import xyz.luan.games.hangman.client.FormScreenInterface;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 
-public class Lobby extends DefaultScene {
-
-    private ClientHandler clientHandler;
+public class Lobby extends ClientScene {
 
     @Override
     protected Pane generatePane() {
@@ -19,8 +17,10 @@ public class Lobby extends DefaultScene {
         return pane;
     }
 
-    public void setClientHandler(ClientHandler clientHandler) {
-        this.clientHandler = clientHandler;
+    @Override
+    public FormScreenInterface createBinding() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

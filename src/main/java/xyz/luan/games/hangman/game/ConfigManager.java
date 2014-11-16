@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xyz.luan.games.hangman.client.ClientConfig;
+import xyz.luan.games.hangman.game.Main.GameMode;
 import xyz.luan.games.hangman.server.ServerConfig;
 
 public final class ConfigManager {
@@ -27,14 +28,14 @@ public final class ConfigManager {
     public static Manager<ClientConfig> client;
     public static Manager<ServerConfig> server;
 
-    public static void load(int mode) {
+    public static void load(GameMode mode) {
         general = new Manager<GeneralConfig>("general.dat", GeneralConfig.class);
         I18n.load(general.config().getLocale());
 
-        if (mode != 1) {
+        if (mode != GameMode.CLIENT_ONLY) {
             server = new Manager<ServerConfig>("server.dat", ServerConfig.class);
         }
-        if (mode != 2) {
+        if (mode != GameMode.SERVER_ONLY) {
             client = new Manager<ClientConfig>("client.dat", ClientConfig.class);
             xyz.luan.games.hangman.texture.PackManager.load();
         }

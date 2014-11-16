@@ -1,7 +1,7 @@
 package xyz.luan.games.hangman.game.scenes;
 
 import xyz.luan.games.hangman.game.ConfigManager;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormComponent;
 import xyz.luan.games.hangman.game.forms.InvalidFormException;
@@ -12,7 +12,7 @@ public class ClientConfigScene extends DefaultForm {
 
     @Override
     protected StateChangeButton cancelButton() {
-        return new StateChangeButton("common.cancel", GameStatus.CONNECT_TO_SERVER);
+        return new StateChangeButton("common.cancel", MainGameStatus.CONNECT_TO_SERVER);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ClientConfigScene extends DefaultForm {
     @Override
     protected void onOkHook() {
         ConfigManager.client.save();
-        mainRef.setStatus(GameStatus.CONNECT_TO_SERVER);
+        mainRef.setStatus(MainGameStatus.CONNECT_TO_SERVER);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package xyz.luan.games.hangman.game.scenes;
 
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import javafx.scene.layout.GridPane;
@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 
 public class MenuScene extends DefaultScene {
     private static final String[] ITEMS = { "host", "connect", "options", "exit" };
-    private static final GameStatus[] ACTIONS = { GameStatus.SERVER_CONFIG, GameStatus.CONNECT_TO_SERVER, GameStatus.GENERAL_CONFIG, GameStatus.QUIT };
+    private static final MainGameStatus[] ACTIONS = { MainGameStatus.SERVER_CONFIG, MainGameStatus.CONNECT_TO_SERVER, MainGameStatus.GENERAL_CONFIG, MainGameStatus.QUIT };
 
     @Override
     protected Pane generatePane() {

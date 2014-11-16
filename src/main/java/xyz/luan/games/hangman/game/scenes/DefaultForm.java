@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.FormComponent;
 import xyz.luan.games.hangman.game.forms.FormUtils;
@@ -58,7 +58,7 @@ public abstract class DefaultForm extends DefaultScene {
     }
 
     protected StateChangeButton cancelButton() {
-        return new StateChangeButton("common.cancel", GameStatus.MAIN_MENU);
+        return new StateChangeButton("common.cancel", MainGameStatus.MAIN_MENU);
     }
 
     protected abstract String title();

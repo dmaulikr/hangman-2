@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import xyz.luan.games.hangman.server.ConnectionListener;
-import xyz.luan.games.hangman.server.ServerHandler.ClientHandler;
+import xyz.luan.games.hangman.server.Server.ClientHandler;
 
 public class FXConnectionListener implements ConnectionListener {
 

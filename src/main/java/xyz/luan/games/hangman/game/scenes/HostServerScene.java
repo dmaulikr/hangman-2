@@ -14,16 +14,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import xyz.luan.games.hangman.game.ConfigManager;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.DialogHelper;
 import xyz.luan.games.hangman.game.forms.FormUtils;
-import xyz.luan.games.hangman.server.ServerHandler;
-import xyz.luan.games.hangman.server.ServerHandler.ClientHandler;
+import xyz.luan.games.hangman.server.Server;
+import xyz.luan.games.hangman.server.Server.ClientHandler;
 
 public class HostServerScene extends DefaultScene {
 
-    private ServerHandler handler;
+    private Server handler;
 
     private TextField portText;
     private Label status;
@@ -52,7 +52,7 @@ public class HostServerScene extends DefaultScene {
         setupHostButtonForStart();
         grid.add(hostButton, 0, 3);
 
-        cancelButton = new StateChangeButton("common.cancel", GameStatus.MAIN_MENU);
+        cancelButton = new StateChangeButton("common.cancel", MainGameStatus.MAIN_MENU);
         grid.add(cancelButton, 1, 3);
 
         status = new Label();
@@ -112,7 +112,7 @@ public class HostServerScene extends DefaultScene {
         stopServer();
         fxConnectionListener = new FXConnectionListener();
         fxConnectionListener.bind(listView);
-        handler = new ServerHandler(port, fxConnectionListener);
+        handler = new Server(port, fxConnectionListener);
         handler.start();
     }
 

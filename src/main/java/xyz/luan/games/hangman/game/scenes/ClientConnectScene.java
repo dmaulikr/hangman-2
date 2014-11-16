@@ -10,8 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import xyz.luan.games.hangman.client.ClientHandler;
-import xyz.luan.games.hangman.game.GameStatus;
+import xyz.luan.games.hangman.client.Client;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.forms.DialogHelper;
 import xyz.luan.games.hangman.game.forms.FormUtils;
@@ -37,7 +37,7 @@ public class ClientConnectScene extends DefaultScene {
         Button connectButton = new Button(I18n.t("client.connect"));
         connectButton.setOnAction(buttonHandler());
         grid.add(connectButton, 0, 3);
-        grid.add(new StateChangeButton("common.cancel", GameStatus.MAIN_MENU), 1, 3);
+        grid.add(new StateChangeButton("common.cancel", MainGameStatus.MAIN_MENU), 1, 3);
     }
 
     private EventHandler<ActionEvent> buttonHandler() {
@@ -45,7 +45,7 @@ public class ClientConnectScene extends DefaultScene {
             String ip = serverIp.getText();
             System.out.println(ip);
             try {
-                ClientHandler handler = new ClientHandler(ip);
+                Client handler = new Client(ip);
                 mainRef.connect(handler);
             } catch (IOException ex) {
                 DialogHelper.show("Error connecting!", "Could not connect to the requested server. Error: " + ex.getMessage());
@@ -54,7 +54,7 @@ public class ClientConnectScene extends DefaultScene {
     }
 
     private void addClientConfigButton() {
-        grid.add(new StateChangeButton("client.config", GameStatus.CLIENT_CONFIG), 0, 1, 2, 1);
+        grid.add(new StateChangeButton("client.config", MainGameStatus.CLIENT_CONFIG), 0, 1, 2, 1);
     }
 
     private void addServerIpBox() {

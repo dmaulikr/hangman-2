@@ -10,20 +10,29 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xyz.luan.games.hangman.messaging.Message;
+import xyz.luan.games.hangman.messaging.client.ClientMessage;
+import xyz.luan.games.hangman.messaging.server.QuitMessage;
+import xyz.luan.games.hangman.messaging.server.ServerMessage;
 
-public final class ServerHandler extends Thread {
+public final class Server extends Thread {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     private ServerSocket server;
-    private List<ClientHandler> handlers;
     private ConnectionListener listener;
 
-    public ServerHandler(int port, ConnectionListener listener) throws IOException {
+    @Getter
+    private List<ClientHandler> handlers;
+
+    @Getter
+    private ServerData data;
+
+    public Server(int port, ConnectionListener listener) throws IOException {
         this.listener = listener;
         this.handlers = new ArrayList<>();
         this.server = new ServerSocket(port);
@@ -77,7 +86,7 @@ public final class ServerHandler extends Thread {
             this.running = true;
             while (this.running) {
                 try {
-                    Message m = readMessage();
+                    ClientMessage m = readMessage();
                     processMessage(m);
                 } catch (EOFException clientQuitted) {
                     quit();
@@ -92,11 +101,14 @@ public final class ServerHandler extends Thread {
             quit();
         }
 
-        private void processMessage(Message m) {
-            sendMessage(new Message("echo: " + m.getText()));
+        private void processMessage(ClientMessage m) {
+            ServerMessage response = m.handle(Server.this, this);
+            if (response != null) {
+                sendMessage(response);
+            }
         }
 
-        public void sendMessage(Message m) {
+        public void sendMessage(ServerMessage m) {
             try {
                 out.writeObject(m);
             } catch (IOException ex) {
@@ -104,9 +116,9 @@ public final class ServerHandler extends Thread {
             }
         }
 
-        private Message readMessage() throws EOFException, InvalidCommunicationException {
+        private ClientMessage readMessage() throws EOFException, InvalidCommunicationException {
             try {
-                return (Message) in.readObject();
+                return (ClientMessage) in.readObject();
             } catch (EOFException e) {
                 throw e;
             } catch (IOException | ClassCastException | ClassNotFoundException e) {
@@ -123,7 +135,7 @@ public final class ServerHandler extends Thread {
         }
 
         public void notifyQuit() {
-            this.sendMessage(new Message("Server was shutdown. Bye, bye!"));
+            this.sendMessage(new QuitMessage());
             this.running = false;
         }
 
