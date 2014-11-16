@@ -4,8 +4,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.I18n;
+import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.forms.FormComponent;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.game.forms.InvalidFormException;
@@ -37,7 +37,7 @@ public abstract class DefaultForm extends DefaultScene {
         }
 
         grid.add(cancelButton(), 0, components.length + 2);
-        grid.add(new StateChangeButton("common.save", event -> {
+        grid.add(stateChangeButtonwithEvent("common.save", event -> {
             this.errors.setText("");
             boolean allOk = true;
             for (int i = 0; i < fields.length; i++) {
@@ -62,9 +62,14 @@ public abstract class DefaultForm extends DefaultScene {
     }
 
     protected abstract String title();
+
     protected abstract void onOkHook();
+
     protected abstract FormComponent[] getComponents();
+
     protected abstract String getFieldName(int i);
+
     protected abstract String get(String name);
+
     protected abstract void set(String name, String value) throws InvalidFormException;
 }

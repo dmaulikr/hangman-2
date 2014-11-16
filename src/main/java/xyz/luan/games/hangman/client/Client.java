@@ -4,7 +4,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+
+import lombok.Getter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
@@ -12,13 +18,18 @@ import xyz.luan.games.hangman.messaging.server.ServerMessage;
 
 public class Client extends Thread {
 
+    private static final Logger logger = LoggerFactory.getLogger(Client.class);
+
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private boolean running;
+    @Getter
     private ClientData data;
 
-    // TODO think it through
-    private FormScreenInterface bindedInterface;
+    /* TODO think binders through */
+
+    @Getter
+    private FormScreenInterface bindedFormScreen;
 
     public Client(String ip) throws IOException {
         this(getSocket(ip));
@@ -33,12 +44,16 @@ public class Client extends Thread {
     @Override
     public void run() {
         while (running) {
-            processMessage(readMessage());
+            try {
+                processMessage(readMessage());
+            } catch (SocketException quitted) {
+                this.running = false;
+            }
         }
     }
 
     private void processMessage(ServerMessage message) {
-        message.handle(data);
+        message.handle(this);
     }
 
     public void sendMessage(ClientMessage message) {
@@ -49,9 +64,11 @@ public class Client extends Thread {
         }
     }
 
-    private ServerMessage readMessage() {
+    private ServerMessage readMessage() throws SocketException {
         try {
             return (ServerMessage) in.readObject();
+        } catch (SocketException quitted) {
+            throw quitted;
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e); // TODO handle properly
         }
@@ -77,6 +94,16 @@ public class Client extends Thread {
     }
 
     public void bindInterface(FormScreenInterface binding) {
-        this.bindedInterface = binding;
+        this.bindedFormScreen = binding;
+    }
+
+    public void quit() {
+        this.running = false;
+        try {
+            this.in.close();
+            this.out.close();
+        } catch (IOException e) {
+            logger.error("Unable to close connection", e);
+        }
     }
 }

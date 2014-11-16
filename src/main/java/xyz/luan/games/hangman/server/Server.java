@@ -1,6 +1,5 @@
 package xyz.luan.games.hangman.server;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,6 +35,9 @@ public final class Server extends Thread {
         this.listener = listener;
         this.handlers = new ArrayList<>();
         this.server = new ServerSocket(port);
+
+        /* TODO generate from configurations */
+        this.data = new ServerData();
     }
 
     @Override
@@ -87,8 +89,9 @@ public final class Server extends Thread {
             while (this.running) {
                 try {
                     ClientMessage m = readMessage();
+                    System.out.println("read : " + m);
                     processMessage(m);
-                } catch (EOFException clientQuitted) {
+                } catch (SocketException clientQuitted) {
                     quit();
                 } catch (InvalidCommunicationException ex) {
                     handleError(ex);
@@ -103,6 +106,7 @@ public final class Server extends Thread {
 
         private void processMessage(ClientMessage m) {
             ServerMessage response = m.handle(Server.this, this);
+            System.out.println(response);
             if (response != null) {
                 sendMessage(response);
             }
@@ -116,11 +120,11 @@ public final class Server extends Thread {
             }
         }
 
-        private ClientMessage readMessage() throws EOFException, InvalidCommunicationException {
+        private ClientMessage readMessage() throws SocketException, InvalidCommunicationException {
             try {
                 return (ClientMessage) in.readObject();
-            } catch (EOFException e) {
-                throw e;
+            } catch (SocketException clientQuitted) {
+                throw clientQuitted;
             } catch (IOException | ClassCastException | ClassNotFoundException e) {
                 throw new InvalidCommunicationException("", e);
             }
@@ -136,11 +140,21 @@ public final class Server extends Thread {
 
         public void notifyQuit() {
             this.sendMessage(new QuitMessage());
+            stopConnection();
+        }
+
+        private void stopConnection() {
             this.running = false;
+            try {
+                this.in.close();
+                this.out.close();
+            } catch (IOException e) {
+                logger.error("Unable to close connection with client", e);
+            }
         }
 
         public void quit() {
-            this.running = false;
+            stopConnection();
             handlers.remove(this);
             listener.disconnected(this);
         }

@@ -17,21 +17,15 @@ public class FXConnectionListener implements ConnectionListener {
 
     @Override
     public void disconnected(ClientHandler c) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                handlers.remove(c);
-            }
+        Platform.runLater(() -> {
+            handlers.remove(c);
         });
     }
 
     @Override
     public void connected(ClientHandler c) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                handlers.add(c);
-            }
+        Platform.runLater(() -> {
+            handlers.add(c);
         });
     }
 

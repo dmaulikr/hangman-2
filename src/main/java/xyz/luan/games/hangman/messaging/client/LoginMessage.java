@@ -8,6 +8,8 @@ import xyz.luan.games.hangman.server.Server.ClientHandler;
 @AllArgsConstructor
 public class LoginMessage implements ClientMessage {
 
+    private static final long serialVersionUID = 7467992423968139457L;
+
     private String username;
     private String passwordHash;
 

@@ -1,8 +1,10 @@
 package xyz.luan.games.hangman.messaging.server;
 
-import xyz.luan.games.hangman.client.ClientData;
+import java.io.Serializable;
 
-public interface ServerMessage {
+import xyz.luan.games.hangman.client.Client;
 
-    public void handle(ClientData data);
+public interface ServerMessage extends Serializable {
+
+    public void handle(Client client);
 }

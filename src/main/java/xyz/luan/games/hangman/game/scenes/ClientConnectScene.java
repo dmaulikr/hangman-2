@@ -47,6 +47,7 @@ public class ClientConnectScene extends DefaultScene {
             try {
                 Client handler = new Client(ip);
                 mainRef.connect(handler);
+                handler.start();
             } catch (IOException ex) {
                 DialogHelper.show("Error connecting!", "Could not connect to the requested server. Error: " + ex.getMessage());
             }

@@ -6,7 +6,7 @@ import xyz.luan.games.hangman.game.scenes.DefaultScene;
 
 public abstract class ClientScene extends DefaultScene {
 
-    private Client client;
+    protected Client client;
 
     public void setClient(Client client) {
         this.client = client;

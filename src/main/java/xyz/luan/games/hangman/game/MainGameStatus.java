@@ -1,6 +1,5 @@
 package xyz.luan.games.hangman.game;
 
-import xyz.luan.games.hangman.client.scenes.Lobby;
 import xyz.luan.games.hangman.game.scenes.ClientConfigScene;
 import xyz.luan.games.hangman.game.scenes.ClientConnectScene;
 import xyz.luan.games.hangman.game.scenes.DefaultScene;
