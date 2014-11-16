@@ -17,7 +17,7 @@ public class Client extends Thread {
     private boolean running;
     private ClientData data;
 
-    // TODO thing it through
+    // TODO think it through
     private FormScreenInterface bindedInterface;
 
     public Client(String ip) throws IOException {
