@@ -7,6 +7,7 @@ import java.util.Map;
 import xyz.luan.games.hangman.messaging.server.LoginResponse;
 import xyz.luan.games.hangman.messaging.server.RegistrationResponse;
 import xyz.luan.games.hangman.messaging.server.RegistrationResponse.Status;
+import xyz.luan.games.hangman.util.PasswordHasher;
 
 public class ServerData implements Serializable {
 
@@ -16,6 +17,7 @@ public class ServerData implements Serializable {
 
 	public ServerData() {
 		this.users = new HashMap<>();
+		this.users.put("luan", new User("luan", PasswordHasher.hash("123")));
 	}
 
 	public LoginResponse login(String username, String passwordHash) {

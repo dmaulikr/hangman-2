@@ -6,12 +6,17 @@ import xyz.luan.games.hangman.game.scenes.DefaultScene;
 
 public abstract class ClientScene extends DefaultScene {
 
-    protected Client client;
+	protected Client client;
 
-    public void setClient(Client client) {
-        this.client = client;
-        this.client.bindInterface(createBinding());
-    }
+	public void setClient(Client client) {
+		this.client = client;
+		this.client.bindInterface(createBinding());
+	}
 
-    public abstract FormScreenInterface createBinding();
+	public abstract FormScreenInterface createBinding();
+
+	@Override
+	public void closed() {
+		client.quit();
+	}
 }

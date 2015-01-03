@@ -7,12 +7,15 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import javafx.application.Platform;
 import lombok.Getter;
+import lombok.Setter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xyz.luan.games.hangman.game.ConfigManager;
+import xyz.luan.games.hangman.game.Main;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
 
@@ -23,10 +26,12 @@ public class Client extends Thread {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private boolean running;
+
+	@Setter
+	private Main mainRef;
+
 	@Getter
 	private ClientData data;
-
-	/* TODO think binders through */
 
 	@Getter
 	private FormScreenInterface bindedFormScreen;
@@ -51,6 +56,12 @@ public class Client extends Thread {
 				this.running = false;
 			}
 		}
+	}
+
+	public void setMode(ClientStatus mode) {
+		Platform.runLater(() -> {
+			this.mainRef.setStatus(mode);
+		});
 	}
 
 	private void processMessage(ServerMessage message) {

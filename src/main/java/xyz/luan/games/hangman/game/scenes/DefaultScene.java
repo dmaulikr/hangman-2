@@ -45,4 +45,6 @@ public abstract class DefaultScene {
     public StateChangeButton stateChangeButtonwithEvent(String text, EventHandler<ActionEvent> event) {
         return new StateChangeButton(text, event);
     }
+
+	public void closed() {}
 }
