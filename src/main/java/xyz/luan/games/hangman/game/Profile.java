@@ -34,4 +34,8 @@ public class Profile implements Serializable {
 		this.statuses = new ProfileStatuses();
 	}
 
+	@Override
+	public String toString() {
+		return this.username;
+	}
 }

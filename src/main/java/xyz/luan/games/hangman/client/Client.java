@@ -57,9 +57,7 @@ public class Client extends Thread {
 	}
 
 	public void setMode(ClientStatus mode) {
-		Platform.runLater(() -> {
-			this.mainRef.setStatus(mode);
-		});
+		this.mainRef.setStatus(mode);
 	}
 
 	private void processMessage(ServerMessage message) {

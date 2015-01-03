@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +18,21 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
 import xyz.luan.games.hangman.messaging.server.GenericErrorMessage;
 import xyz.luan.games.hangman.messaging.server.QuitMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
+import xyz.luan.games.hangman.messaging.server.UserLoginNotification;
+import xyz.luan.games.hangman.messaging.server.UserLogoutNotification;
 
 public final class Server extends Thread {
 
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
 	private ServerSocket server;
-	private ConnectionListener listener;
+	private NotificationListener listener;
 	private boolean running;
 
 	@Getter
@@ -36,7 +41,7 @@ public final class Server extends Thread {
 	@Getter
 	private ServerData data;
 
-	public Server(int port, ConnectionListener listener) throws IOException {
+	public Server(int port, NotificationListener listener) throws IOException {
 		this.listener = listener;
 		this.handlers = new ArrayList<>();
 		this.server = new ServerSocket(port);
@@ -80,8 +85,12 @@ public final class Server extends Thread {
 	private void processSocket(Socket socket) throws IOException {
 		ClientHandler handler = new ClientHandler(socket);
 		handlers.add(handler);
-		listener.connected(handler);
+		listener.userConnected(handler);
 		handler.start();
+	}
+
+	public Set<Profile> loggedUsers() {
+		return handlers.stream().map(h -> h.getProfile()).filter(p -> p != null).collect(Collectors.toSet());
 	}
 
 	public class ClientHandler extends Thread {
@@ -174,13 +183,17 @@ public final class Server extends Thread {
 			}
 		}
 
+		private void sendToOthers(ServerMessage message) {
+			handlers.stream().filter(c -> c != this).forEach(c -> c.sendMessage(message));
+		}
+
 		public void quit() {
 			if (isLoggedIn()) {
 				logout();
 			}
 			stopConnection();
 			handlers.remove(this);
-			listener.disconnected(this);
+			listener.userDisconnected(this);
 		}
 
 		public boolean isLoggedIn() {
@@ -188,8 +201,21 @@ public final class Server extends Thread {
 		}
 
 		public void logout() {
+			sendToOthers(new UserLogoutNotification(profile));
 			data.logout(profile.getUsername());
+			listener.userLoggedOut(this);
 			this.profile = null;
+		}
+
+		public void login(Profile profile) {
+			this.profile = profile;
+			listener.userLoggedIn(this);
+			sendToOthers(new UserLoginNotification(profile));
+		}
+
+		@Override
+		public String toString() {
+			return isLoggedIn() ? profile.toString() : I18n.t("host.unknown_user");
 		}
 	}
 }

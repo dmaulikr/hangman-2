@@ -18,6 +18,7 @@ host:
   config: 'Host config'
   host: 'Host'
   stop: 'Stop'
+  unknown_user: 'Unidentified user'
 client:
   connect: 'Connect'
   config: 'Configuration'

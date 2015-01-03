@@ -2,7 +2,9 @@ package xyz.luan.games.hangman.messaging.client;
 
 import lombok.AllArgsConstructor;
 import xyz.luan.games.hangman.messaging.server.LoginResponse;
+import xyz.luan.games.hangman.messaging.server.LoginResponse.Status;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
+import xyz.luan.games.hangman.messaging.server.UserLoginNotification;
 import xyz.luan.games.hangman.server.Server;
 import xyz.luan.games.hangman.server.Server.ClientHandler;
 
@@ -17,7 +19,10 @@ public class LoginMessage implements ClientMessage {
 	@Override
 	public ServerMessage handle(Server server, ClientHandler client) {
 		LoginResponse response = server.getData().login(username, passwordHash);
-		client.setProfile(response.getProfile());
+		if (response.getStatus() == Status.OK) {
+			client.login(response.getProfile());
+			response.setLoggedUsers(server.loggedUsers());
+		}
 		return response;
 	}
 

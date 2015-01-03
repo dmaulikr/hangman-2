@@ -31,7 +31,7 @@ public class HostServerScene extends DefaultScene {
 
 	private GridPane hostingDataPane;
 	private ListView<ClientHandler> listView;
-	private FXConnectionListener fxConnectionListener;
+	private FXNotificationListener fxConnectionListener;
 
 	@Override
 	protected Pane generatePane() {
@@ -110,7 +110,7 @@ public class HostServerScene extends DefaultScene {
 
 	private void startServer(int port) throws IOException {
 		stopServer();
-		fxConnectionListener = new FXConnectionListener();
+		fxConnectionListener = new FXNotificationListener();
 		fxConnectionListener.bind(listView);
 		handler = new Server(port, fxConnectionListener);
 		handler.start();

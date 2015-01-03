@@ -1,21 +1,33 @@
 package xyz.luan.games.hangman.messaging.server;
 
-import lombok.AllArgsConstructor;
+import java.util.Set;
+
 import lombok.Getter;
+import lombok.Setter;
 import xyz.luan.games.hangman.client.Client;
 import xyz.luan.games.hangman.client.ClientStatus;
+import xyz.luan.games.hangman.client.scenes.Lobby;
 import xyz.luan.games.hangman.client.scenes.LoginScene;
 import xyz.luan.games.hangman.game.Profile;
 
-@AllArgsConstructor
 public class LoginResponse implements ServerMessage {
 
 	private static final long serialVersionUID = 5155627622031471945L;
 
+	@Getter
 	private Status status;
 
 	@Getter
 	private Profile profile;
+
+	@Getter
+	@Setter
+	private Set<Profile> loggedUsers;
+
+	public LoginResponse(Status status, Profile profile) {
+		this.status = status;
+		this.profile = profile;
+	}
 
 	public LoginResponse(Status status) {
 		this(status, null);
@@ -35,6 +47,7 @@ public class LoginResponse implements ServerMessage {
 	public void handle(Client client) {
 		if (status == Status.OK) {
 			client.setMode(ClientStatus.LOBBY);
+			client.getCurrentScene().as(Lobby.class).getLoggedUsersView().setLoggedUsersList(loggedUsers);
 			client.getData().setMe(profile);
 		} else {
 			client.getCurrentScene().as(LoginScene.class).setErrors(status.toString());
