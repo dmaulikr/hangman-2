@@ -24,6 +24,7 @@ public final class Server extends Thread {
 
 	private ServerSocket server;
 	private ConnectionListener listener;
+	private boolean running;
 
 	@Getter
 	private List<ClientHandler> handlers;
@@ -41,8 +42,14 @@ public final class Server extends Thread {
 	}
 
 	@Override
+	public synchronized void start() {
+		this.running = true;
+		super.start();
+	};
+
+	@Override
 	public void run() {
-		while (true) {
+		while (running) {
 			try {
 				processSocket(server.accept());
 			} catch (SocketException serverQuitted) {
@@ -59,6 +66,7 @@ public final class Server extends Thread {
 
 	private void closeConnection() {
 		try {
+			running = false;
 			server.close();
 		} catch (IOException e) {
 			logger.error("Unable to close server socket", e);
