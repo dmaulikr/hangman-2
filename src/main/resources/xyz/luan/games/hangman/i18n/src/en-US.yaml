@@ -40,3 +40,7 @@ client:
       passwords_dont_match: 'The passwords informed do not match.'
       username_already_registered: 'There is already someone with that username.'
       username_empty: 'Your username cannot be empty.'
+  lobby:
+    title: 'Lobby'
+  profile:
+    title: 'Profile'

@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import xyz.luan.games.hangman.client.ClientStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.game.forms.FormUtils;
@@ -26,7 +27,8 @@ public class Lobby extends ClientScene {
 
 		pane.add(new Label("it fucking works, bob!"), 0, 0);
 		pane.add(logoutButton(), 0, 1);
-		pane.add(loggedUsersView(), 0, 2);
+		pane.add(new StateChangeButton("client.profile.title", ClientStatus.PROFILE), 0, 2);
+		pane.add(loggedUsersView(), 0, 3);
 
 		return pane;
 	}
@@ -44,13 +46,14 @@ public class Lobby extends ClientScene {
 		return logout;
 	}
 
-	public static class LoggedUsersView {
+	public class LoggedUsersView {
 
 		@Getter
 		private ListView<Profile> list;
 
 		public LoggedUsersView() {
 			list = new ListView<>();
+			list.setItems(FXCollections.observableArrayList(client.getData().getLoggedUsers()));
 		}
 
 		public void notifyLogin(Profile profile) {
@@ -61,8 +64,5 @@ public class Lobby extends ClientScene {
 			list.getItems().remove(profile);
 		}
 
-		public void setLoggedUsersList(Set<Profile> loggedUsers) {
-			list.setItems(FXCollections.observableArrayList(loggedUsers));
-		}
 	}
 }

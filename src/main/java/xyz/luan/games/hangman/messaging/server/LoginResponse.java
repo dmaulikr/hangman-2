@@ -5,6 +5,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.luan.games.hangman.client.Client;
+import xyz.luan.games.hangman.client.ClientData;
 import xyz.luan.games.hangman.client.ClientStatus;
 import xyz.luan.games.hangman.client.scenes.Lobby;
 import xyz.luan.games.hangman.client.scenes.LoginScene;
@@ -46,11 +47,10 @@ public class LoginResponse implements ServerMessage {
 	@Override
 	public void handle(Client client) {
 		if (status == Status.OK) {
+			client.setData(new ClientData(profile, loggedUsers));
 			client.setMode(ClientStatus.LOBBY);
-			client.getCurrentScene().as(Lobby.class).getLoggedUsersView().setLoggedUsersList(loggedUsers);
-			client.getData().setMe(profile);
 		} else {
-			client.getCurrentScene().as(LoginScene.class).setErrors(status.toString());
+			client.getCurrentScene().perform(LoginScene.class, s -> s.setErrors(status.toString()));
 		}
 	}
 }

@@ -17,6 +17,7 @@ public class UserLogoutNotification implements ServerMessage {
 
 	@Override
 	public void handle(Client client) {
-		client.getCurrentScene().as(Lobby.class).getLoggedUsersView().notifyLogout(profile);
+		client.getData().notifyLogout(profile);
+		client.getCurrentScene().perform(Lobby.class, s -> s.getLoggedUsersView().notifyLogout(profile));
 	}
 }

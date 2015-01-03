@@ -43,6 +43,8 @@ public class FXNotificationListener implements NotificationListener {
 
 	@Override
 	public void userLoggedOut(ClientHandler c) {
-		handlers.set(handlers.indexOf(c), c);
+		Platform.runLater(() -> {
+			handlers.set(handlers.indexOf(c), c);
+		});
 	}
 }

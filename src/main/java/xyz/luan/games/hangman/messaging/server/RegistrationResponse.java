@@ -30,6 +30,6 @@ public class RegistrationResponse implements ServerMessage {
 
 	@Override
 	public void handle(Client client) {
-		client.getCurrentScene().as(RegistrationScene.class).setErrors(status.toString());
+		client.getCurrentScene().perform(RegistrationScene.class, s -> s.setErrors(status.toString()));
 	}
 }

@@ -17,6 +17,7 @@ public class UserLoginNotification implements ServerMessage {
 
 	@Override
 	public void handle(Client client) {
-		client.getCurrentScene().as(Lobby.class).getLoggedUsersView().notifyLogin(profile);
+		client.getData().notifyLogin(profile);
+		client.getCurrentScene().perform(Lobby.class, s -> s.getLoggedUsersView().notifyLogin(profile));
 	}
 }

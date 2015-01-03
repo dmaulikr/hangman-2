@@ -1,14 +1,28 @@
 package xyz.luan.games.hangman.client;
 
-import java.io.Serializable;
+import java.util.Set;
 
-import lombok.Data;
-import xyz.luan.games.hangman.game.Main;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import xyz.luan.games.hangman.game.Profile;
 
-@Data
+@AllArgsConstructor
 public class ClientData {
 
+	@Getter
+	@Setter
 	private Profile me;
+
+	@Getter
+	private Set<Profile> loggedUsers;
+
+	public void notifyLogin(Profile profile) {
+		loggedUsers.add(profile);
+	}
+
+	public void notifyLogout(Profile profile) {
+		loggedUsers.remove(profile);
+	}
 
 }

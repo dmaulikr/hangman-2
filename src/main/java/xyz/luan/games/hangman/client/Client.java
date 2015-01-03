@@ -41,7 +41,6 @@ public class Client extends Thread {
 	public Client(Socket socket) throws IOException {
 		this.out = new ObjectOutputStream(socket.getOutputStream());
 		this.in = new ObjectInputStream(socket.getInputStream());
-		this.data = new ClientData(); // TODO validate this
 		this.running = true;
 	}
 
@@ -115,5 +114,9 @@ public class Client extends Thread {
 		} catch (IOException e) {
 			logger.error("Unable to close connection", e);
 		}
+	}
+
+	public void setData(ClientData data) {
+		this.data = data;
 	}
 }

@@ -64,10 +64,10 @@ public class Main extends Application {
 			Platform.exit();
 		} else {
 			this.scene = status.getNewScene(this);
-			this.stage.setScene(scene.generateScene());
 			if (status instanceof ClientStatus) {
 				((ClientScene) scene).setClient(clientRef);
 			}
+			this.stage.setScene(scene.generateScene());
 		}
 	}
 
