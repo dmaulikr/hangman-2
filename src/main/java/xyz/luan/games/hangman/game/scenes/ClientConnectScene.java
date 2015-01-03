@@ -43,7 +43,6 @@ public class ClientConnectScene extends DefaultScene {
     private EventHandler<ActionEvent> buttonHandler() {
         return e -> {
             String ip = serverIp.getText();
-            System.out.println(ip);
             try {
                 Client handler = new Client(ip);
                 mainRef.connect(handler);

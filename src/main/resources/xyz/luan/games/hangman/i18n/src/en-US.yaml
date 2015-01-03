@@ -26,7 +26,14 @@ client:
     title: 'Login'
     username: 'Username'
     password: 'Password'
+    errors:
+      usernameNotFound: 'Username not found.'
+      wrongPassword: 'Wrong password.'
   register:
     title: 'Register'
     repeat_password: 'Repeat Password'
-    passwordsDontMatch: 'The passwords informed do not match'
+    success: 'Successfully registered. You can login now.'
+    errors:
+      passwordsDontMatch: 'The passwords informed do not match.'
+      usernameAlreadyFound: 'There is already someone with that username.'
+      usernameEmpty: 'Your username cannot be empty.'
