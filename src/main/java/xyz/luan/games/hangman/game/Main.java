@@ -81,4 +81,8 @@ public class Main extends Application {
 		this.clientRef.setMainRef(this);
 		setStatus(ClientStatus.LOGIN);
 	}
+
+	public DefaultScene getScene() {
+		return scene;
+	}
 }

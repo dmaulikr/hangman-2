@@ -7,7 +7,7 @@ import xyz.luan.games.hangman.server.Server;
 import xyz.luan.games.hangman.server.Server.ClientHandler;
 
 @AllArgsConstructor
-public class LoginMessage implements ClientMessage {
+public class LogoutMessage implements ClientMessage {
 
     private static final long serialVersionUID = 7467992423968139457L;
 
@@ -16,7 +16,6 @@ public class LoginMessage implements ClientMessage {
 
     @Override
     public ServerMessage handle(Server server, ClientHandler client) {
-    	client.assertNotLoggedIn();
         LoginResponse response = server.getData().login(username, passwordHash);
         client.setProfile(response.getProfile());
 		return response;

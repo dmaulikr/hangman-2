@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.luan.games.hangman.client.scenes.ClientScene;
 import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.game.Main;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
@@ -32,9 +33,6 @@ public class Client extends Thread {
 
 	@Getter
 	private ClientData data;
-
-	@Getter
-	private FormScreenInterface bindedFormScreen;
 
 	public Client(String ip) throws IOException {
 		this(getSocket(ip));
@@ -65,7 +63,9 @@ public class Client extends Thread {
 	}
 
 	private void processMessage(ServerMessage message) {
-		message.handle(this);
+		Platform.runLater(() -> {
+			message.handle(this);
+		});
 	}
 
 	public void sendMessage(ClientMessage message) {
@@ -105,8 +105,8 @@ public class Client extends Thread {
 		return new Socket(host, port);
 	}
 
-	public void bindInterface(FormScreenInterface binding) {
-		this.bindedFormScreen = binding;
+	public ClientScene getCurrentScene() {
+		return (ClientScene) mainRef.getScene();
 	}
 
 	public void quit() {

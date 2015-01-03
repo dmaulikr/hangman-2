@@ -1,9 +1,5 @@
 package xyz.luan.games.hangman.client.scenes;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,7 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import xyz.luan.games.hangman.client.ClientStatus;
-import xyz.luan.games.hangman.client.FormScreenInterface;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.forms.FormUtils;
@@ -80,18 +75,8 @@ public class LoginScene extends ClientScene {
 		pane.add(sceneTitle, 0, 0, 2, 1);
 	}
 
-	@Override
-	public FormScreenInterface createBinding() {
-		return new FormScreenInterface() {
-
-			@Override
-			public void setErrors(String... errors) {
-				Platform.runLater(() -> {
-					LoginScene.this.errors.setText(FormScreenInterface.convert(errors));
-				});
-			}
-
-		};
+	public void setErrors(String... errors) {
+		LoginScene.this.errors.setText(FormUtils.convertErrorMessages(errors));
 	}
 
 }

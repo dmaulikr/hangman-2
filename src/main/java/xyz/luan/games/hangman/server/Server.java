@@ -1,5 +1,6 @@
 package xyz.luan.games.hangman.server;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
 import xyz.luan.games.hangman.messaging.server.QuitMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
@@ -86,6 +89,9 @@ public final class Server extends Thread {
 		private ObjectInputStream in;
 		private ObjectOutputStream out;
 
+		@Setter
+		private Profile profile;
+
 		public ClientHandler(Socket socket) throws IOException {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -98,7 +104,7 @@ public final class Server extends Thread {
 				try {
 					ClientMessage m = readMessage();
 					processMessage(m);
-				} catch (SocketException clientQuitted) {
+				} catch (EOFException clientQuitted) {
 					quit();
 				} catch (InvalidCommunicationException ex) {
 					handleError(ex);
@@ -126,10 +132,10 @@ public final class Server extends Thread {
 			}
 		}
 
-		private ClientMessage readMessage() throws SocketException, InvalidCommunicationException {
+		private ClientMessage readMessage() throws EOFException, InvalidCommunicationException {
 			try {
 				return (ClientMessage) in.readObject();
-			} catch (SocketException clientQuitted) {
+			} catch (EOFException clientQuitted) {
 				throw clientQuitted;
 			} catch (IOException | ClassCastException | ClassNotFoundException e) {
 				throw new InvalidCommunicationException("", e);
@@ -163,6 +169,9 @@ public final class Server extends Thread {
 			stopConnection();
 			handlers.remove(this);
 			listener.disconnected(this);
+		}
+
+		public void assertNotLoggedIn() {
 		}
 	}
 }

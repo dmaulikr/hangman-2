@@ -3,6 +3,7 @@ package xyz.luan.games.hangman.messaging.server;
 import lombok.AllArgsConstructor;
 import xyz.luan.games.hangman.client.Client;
 import xyz.luan.games.hangman.client.ClientStatus;
+import xyz.luan.games.hangman.client.scenes.LoginScene;
 import xyz.luan.games.hangman.game.Profile;
 
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class RegistrationResponse implements ServerMessage {
 			@Override
 			public String toString() {
 				return "client.register.errors.usernameEmpty";
-			}			
+			}
 		},
 		USERNAME_ALREADY_REGISTERED {
 			@Override
@@ -35,6 +36,6 @@ public class RegistrationResponse implements ServerMessage {
 
 	@Override
 	public void handle(Client client) {
-		client.getBindedFormScreen().setErrors(status.toString());
+		client.getCurrentScene().as(LoginScene.class).setErrors(status.toString());
 	}
 }

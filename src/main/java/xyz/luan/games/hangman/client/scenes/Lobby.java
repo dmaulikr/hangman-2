@@ -3,7 +3,6 @@ package xyz.luan.games.hangman.client.scenes;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import xyz.luan.games.hangman.client.FormScreenInterface;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 
 public class Lobby extends ClientScene {
@@ -15,12 +14,6 @@ public class Lobby extends ClientScene {
         pane.add(new Label("it fucking works, bob!"), 0, 0);
 
         return pane;
-    }
-
-    @Override
-    public FormScreenInterface createBinding() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
