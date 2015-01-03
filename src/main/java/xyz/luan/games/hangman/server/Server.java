@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
+import xyz.luan.games.hangman.messaging.server.GenericErrorMessage;
 import xyz.luan.games.hangman.messaging.server.QuitMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
 
@@ -118,10 +119,17 @@ public final class Server extends Thread {
 		}
 
 		private void processMessage(ClientMessage m) {
-			ServerMessage response = m.handle(Server.this, this);
+			ServerMessage response = parseMessage(m);
 			if (response != null) {
 				sendMessage(response);
 			}
+		}
+
+		private ServerMessage parseMessage(ClientMessage m) {
+			if (!m.requirement().fufill(this)) {
+				return new GenericErrorMessage(m.requirement());
+			}
+			return m.handle(Server.this, this);
 		}
 
 		public void sendMessage(ServerMessage m) {
@@ -171,7 +179,12 @@ public final class Server extends Thread {
 			listener.disconnected(this);
 		}
 
-		public void assertNotLoggedIn() {
+		public boolean isLoggedIn() {
+			return profile != null;
+		}
+
+		public void logout() {
+			this.profile = null;
 		}
 	}
 }

@@ -12,6 +12,7 @@ import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.MainGameStatus;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.messaging.client.LoginMessage;
+import xyz.luan.games.hangman.messaging.client.LogoutMessage;
 import xyz.luan.games.hangman.util.PasswordHasher;
 
 public class LoginScene extends ClientScene {

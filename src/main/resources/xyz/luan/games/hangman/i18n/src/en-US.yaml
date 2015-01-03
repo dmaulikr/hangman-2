@@ -29,6 +29,7 @@ client:
     errors:
       usernameNotFound: 'Username not found.'
       wrongPassword: 'Wrong password.'
+  logout: 'Logout'
   register:
     title: 'Register'
     repeat_password: 'Repeat Password'
