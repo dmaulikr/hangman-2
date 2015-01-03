@@ -1,6 +1,8 @@
 common:
   cancel: 'Cancel'
   save: 'Save'
+  ok: 'Ok'
+  loading: 'Loading'
 main:
   title: 'the Hangman'
   menu:
@@ -15,3 +17,16 @@ options:
 host:
   config: 'Host config'
   host: 'Host'
+  stop: 'Stop'
+client:
+  connect: 'Connect'
+  config: 'Configuration'
+  serverIp: 'Server IP'
+  login:
+    title: 'Login'
+    username: 'Username'
+    password: 'Password'
+  register:
+    title: 'Register'
+    repeat_password: 'Repeat Password'
+    passwordsDontMatch: 'The passwords informed do not match'

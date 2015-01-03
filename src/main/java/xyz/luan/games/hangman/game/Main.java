@@ -27,7 +27,7 @@ public class Main extends Application {
 
     private static void parseMode(String[] args) {
         if (args.length > 1) {
-            halt("Invalid options. Must be run with program [clientOnly | serverOnly].");
+            halt("Invalid options. Must be run argless or with one argument [clientOnly | serverOnly].");
         }
         if (args.length == 0) {
             mode = GameMode.BOTH;

@@ -35,11 +35,11 @@ public class RegisterScene extends ClientScene {
     }
 
     private void createBottomButtons(GridPane pane) {
-        Button registerButton = new Button(I18n.t("client.registration.register"));
+        Button registerButton = new Button(I18n.t("client.login.title"));
         registerButton.setOnAction(e -> {
-            mainRef.setStatus(ClientStatus.REGISTER);
+            mainRef.setStatus(ClientStatus.LOGIN);
         });
-        pane.add(registerButton, 0, 5, 2, 1);
+        pane.add(registerButton, 0, 6, 2, 1);
     }
 
     private void createActionButtons(GridPane pane) {
@@ -47,6 +47,7 @@ public class RegisterScene extends ClientScene {
         okButton.setOnAction(e -> {
             String passwordString = password.getText();
             if (passwordRepeat.getText().equals(passwordString)) {
+                errors.setText(I18n.t("common.loading"));
                 client.sendMessage(null); // TODO RegisterMessage
                 System.out.println("Message sent! -sqn");
             } else {

@@ -38,7 +38,7 @@ public class LoginScene extends ClientScene {
     }
 
     private void createBottomButtons(GridPane pane) {
-        Button registerButton = new Button(I18n.t("client.registration.register"));
+        Button registerButton = new Button(I18n.t("client.register.title"));
         registerButton.setOnAction(e -> {
             mainRef.setStatus(ClientStatus.REGISTER);
         });
