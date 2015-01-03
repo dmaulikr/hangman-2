@@ -90,6 +90,7 @@ public final class Server extends Thread {
 		private ObjectInputStream in;
 		private ObjectOutputStream out;
 
+		@Getter
 		@Setter
 		private Profile profile;
 
@@ -174,6 +175,9 @@ public final class Server extends Thread {
 		}
 
 		public void quit() {
+			if (isLoggedIn()) {
+				logout();
+			}
 			stopConnection();
 			handlers.remove(this);
 			listener.disconnected(this);
@@ -184,6 +188,7 @@ public final class Server extends Thread {
 		}
 
 		public void logout() {
+			data.logout(profile.getUsername());
 			this.profile = null;
 		}
 	}

@@ -3,6 +3,7 @@ package xyz.luan.games.hangman.server;
 import java.io.Serializable;
 
 import lombok.Getter;
+import lombok.Setter;
 import xyz.luan.games.hangman.game.Profile;
 
 public class User implements Serializable, Comparable<User> {
@@ -14,6 +15,10 @@ public class User implements Serializable, Comparable<User> {
 
 	@Getter
 	private String passwordHash;
+
+	@Getter
+	@Setter
+	private transient boolean loggedIn = false;
 
 	public User(String username, String passwordHash) {
 		int defaultAvatar = 1; // TODO create configuration for this

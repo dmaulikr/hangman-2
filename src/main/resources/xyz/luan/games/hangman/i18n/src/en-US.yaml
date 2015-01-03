@@ -27,14 +27,15 @@ client:
     username: 'Username'
     password: 'Password'
     errors:
-      usernameNotFound: 'Username not found.'
-      wrongPassword: 'Wrong password.'
+      username_not_found: 'Username not found.'
+      wrong_password: 'Wrong password.'
+      already_logged_in: 'User is already logged in.'
   logout: 'Logout'
   register:
     title: 'Register'
     repeat_password: 'Repeat Password'
     success: 'Successfully registered. You can login now.'
     errors:
-      passwordsDontMatch: 'The passwords informed do not match.'
-      usernameAlreadyFound: 'There is already someone with that username.'
-      usernameEmpty: 'Your username cannot be empty.'
+      passwords_dont_match: 'The passwords informed do not match.'
+      username_already_registered: 'There is already someone with that username.'
+      username_empty: 'Your username cannot be empty.'

@@ -13,7 +13,7 @@ import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.messaging.client.RegistrationMessage;
 import xyz.luan.games.hangman.util.PasswordHasher;
 
-public class RegisterScene extends ClientScene {
+public class RegistrationScene extends ClientScene {
 
 	private Label errors;
 	private TextField username, password, passwordRepeat;
@@ -81,7 +81,7 @@ public class RegisterScene extends ClientScene {
 	}
 
 	public void setErrors(String... errors) {
-		RegisterScene.this.errors.setText(FormUtils.convertErrorMessages(errors));
+		RegistrationScene.this.errors.setText(FormUtils.convertErrorMessages(errors));
 	}
 
 }

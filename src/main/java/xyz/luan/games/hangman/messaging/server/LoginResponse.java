@@ -23,19 +23,12 @@ public class LoginResponse implements ServerMessage {
 	}
 
 	public enum Status {
-		USERNAME_NOT_FOUND {
-			@Override
-			public String toString() {
-				return "client.login.errors.usernameNotFound";
-			}
-		},
-		WRONG_PASSWORD {
-			@Override
-			public String toString() {
-				return "client.login.errors.wrongPassword";
-			}
-		},
-		OK;
+		USERNAME_NOT_FOUND, WRONG_PASSWORD, ALREADY_LOGGED_IN, OK;
+
+		@Override
+		public String toString() {
+			return "client.login.errors." + this.name().toLowerCase();
+		}
 	}
 
 	@Override

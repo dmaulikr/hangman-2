@@ -3,14 +3,14 @@ package xyz.luan.games.hangman.client;
 import xyz.luan.games.hangman.client.scenes.ClientScene;
 import xyz.luan.games.hangman.client.scenes.Lobby;
 import xyz.luan.games.hangman.client.scenes.LoginScene;
-import xyz.luan.games.hangman.client.scenes.RegisterScene;
+import xyz.luan.games.hangman.client.scenes.RegistrationScene;
 import xyz.luan.games.hangman.game.GameStatus;
 import xyz.luan.games.hangman.game.Main;
 import xyz.luan.games.hangman.game.scenes.DefaultScene;
 
 public enum ClientStatus implements GameStatus {
 
-	LOGIN(LoginScene.class), REGISTER(RegisterScene.class), LOBBY(Lobby.class), PROFILE, GAME;
+	LOGIN(LoginScene.class), REGISTER(RegistrationScene.class), LOBBY(Lobby.class), PROFILE, GAME;
 
 	private Class<? extends ClientScene> sceneClass;
 

@@ -20,6 +20,10 @@ public class ServerData implements Serializable {
 		this.users.put("luan", new User("luan", PasswordHasher.hash("123")));
 	}
 
+	public void logout(String username) {
+		this.users.get(username).setLoggedIn(false);
+	}
+
 	public LoginResponse login(String username, String passwordHash) {
 		User user = users.get(username);
 		if (user == null) {
@@ -28,12 +32,16 @@ public class ServerData implements Serializable {
 		if (!user.getPasswordHash().equals(passwordHash)) {
 			return new LoginResponse(LoginResponse.Status.WRONG_PASSWORD);
 		}
+		if (user.isLoggedIn()) {
+			return new LoginResponse(LoginResponse.Status.ALREADY_LOGGED_IN);
+		}
+		user.setLoggedIn(true);
 		return new LoginResponse(LoginResponse.Status.OK, user.getProfile());
 	}
 
 	public RegistrationResponse register(String username, String passwordHash) {
 		if (username == null || username.isEmpty()) {
-			return new RegistrationResponse(Status.EMPTY_USERNAME);
+			return new RegistrationResponse(Status.USERNAME_EMPTY);
 		}
 		User user = users.get(username);
 		if (user != null) {
