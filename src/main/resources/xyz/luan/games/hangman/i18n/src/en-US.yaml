@@ -3,6 +3,10 @@ common:
   save: 'Save'
   ok: 'Ok'
   loading: 'Loading'
+  error: 'Error'
+errors:
+  must_be_logged_in: 'You must be logged in to perform this action!'
+  must_not_be_logged_in: 'You cannot be logged in to perform this action!'
 main:
   title: 'the Hangman'
   menu:
@@ -19,6 +23,8 @@ host:
   host: 'Host'
   stop: 'Stop'
   unknown_user: 'Unidentified user'
+  options:
+    maxSelectedSpells: 'Max selected spells'
 client:
   connect: 'Connect'
   config: 'Configuration'
@@ -55,3 +61,6 @@ game:
     grimoire:
       label: 'Grimoire'
       hint: 'blah grimoire'
+    errors:
+      invalid_spells_selected: 'You selected spell you do not have!'
+      selected_too_many_spells: 'You selected too many spells to be used in the duels. The maximum value is {0}'

@@ -1,14 +1,10 @@
 package xyz.luan.games.hangman.texture;
 
 import java.awt.Graphics2D;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.omg.CORBA.UNKNOWN;
 
 import javafx.scene.image.Image;
+import xyz.luan.games.hangman.spells.Spell;
 
 public class TexturePack {
 
@@ -16,6 +12,7 @@ public class TexturePack {
 	private Map<String, java.awt.Color> colorSchema;
 	private Map<IconType, Image> icons;
 	private Map<DefaultAvatar, Image> defaultAvatars;
+	private Map<SpellIcon, Image> spellIcons;
 
 	public TexturePack(String name) throws BadPackException {
 		String path = "/xyz/luan/games/hangman/textures/" + name;
@@ -23,6 +20,11 @@ public class TexturePack {
 		this.colorSchema = ColorSchema.loadColorsFromPath(path);
 		this.icons = IconType.loadIconsFromPath(path + "/icons");
 		this.defaultAvatars = DefaultAvatar.loadAvatarsFromPath(path + "/avatars");
+		this.spellIcons = SpellIcon.loadAllIcons(path + "/spells");
+	}
+
+	public Image getSpellIcon(Spell spell) {
+		return spellIcons.get(spell.getIcon());
 	}
 
 	public Image getAvatar(String url) {
@@ -68,7 +70,9 @@ public class TexturePack {
 	}
 
 	public enum Aligment {
-		START(0), MIDDLE(-1), END(-2);
+		START(0),
+		MIDDLE(-1),
+		END(-2);
 
 		private int multiplier;
 

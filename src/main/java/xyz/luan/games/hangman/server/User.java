@@ -35,11 +35,11 @@ public class User implements Serializable, Comparable<User> {
 
 	@Override
 	public int compareTo(User user) {
-		return this.profile.getUsername().compareTo(user.profile.getUsername());
+		return this.profile.compareTo(user.profile);
 	}
 
 	@Override
 	public int hashCode() {
-		return this.profile.getUsername().hashCode();
+		return this.profile.hashCode();
 	}
 }

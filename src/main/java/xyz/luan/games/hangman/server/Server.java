@@ -69,6 +69,10 @@ public final class Server extends Thread {
 		}
 	}
 
+	public void sendAll(ServerMessage message) {
+		handlers.stream().filter(c -> c.isLoggedIn()).forEach(c -> c.sendMessage(message));
+	}
+
 	public void quit() {
 		handlers.stream().forEach(c -> c.notifyQuit());
 		closeConnection();
@@ -145,6 +149,7 @@ public final class Server extends Thread {
 
 		public void sendMessage(ServerMessage m) {
 			try {
+				out.reset();
 				out.writeObject(m);
 			} catch (IOException ex) {
 				handleError(ex);
@@ -184,7 +189,7 @@ public final class Server extends Thread {
 			}
 		}
 
-		private void sendToOthers(ServerMessage message) {
+		public void sendToOthers(ServerMessage message) {
 			handlers.stream().filter(c -> c != this).forEach(c -> c.sendMessage(message));
 		}
 

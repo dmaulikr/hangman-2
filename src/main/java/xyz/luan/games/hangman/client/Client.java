@@ -67,6 +67,7 @@ public class Client extends Thread {
 
 	public void sendMessage(ClientMessage message) {
 		try {
+			out.reset();
 			out.writeObject(message);
 		} catch (IOException e) {
 			throw new RuntimeException(e); // TODO handle properly

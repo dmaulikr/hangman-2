@@ -9,11 +9,15 @@ import xyz.luan.games.hangman.messaging.client.ClientMessage.Requirement;
 @AllArgsConstructor
 public class GenericErrorMessage implements ServerMessage {
 
-	private Requirement error;
+	private String error;
+
+	public GenericErrorMessage(Requirement error) {
+		this(error.name().toLowerCase());
+	}
 
 	@Override
 	public void handle(Client client) {
-		DialogHelper.show(I18n.t("common.error"), I18n.t("errors." + error.name().toLowerCase()));
+		DialogHelper.show(I18n.t("common.error"), I18n.t("errors." + error));
 	}
 
 }

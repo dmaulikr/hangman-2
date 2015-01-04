@@ -25,4 +25,12 @@ public class ClientData {
 		loggedUsers.remove(profile);
 	}
 
+	public void notifyProfileUpdate(Profile profile) {
+		if (me.equals(profile)) {
+			me = profile;
+		}
+		loggedUsers.remove(profile);
+		loggedUsers.add(profile);
+	}
+
 }
