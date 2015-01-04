@@ -27,7 +27,7 @@ public class Lobby extends ClientScene {
 
 		pane.add(new Label("it fucking works, bob!"), 0, 0);
 		pane.add(logoutButton(), 0, 1);
-		pane.add(new StateChangeButton("client.profile.title", ClientStatus.PROFILE), 0, 2);
+		pane.add(new StateChangeButton("game.profile.title", ClientStatus.PROFILE), 0, 2);
 		pane.add(loggedUsersView(), 0, 3);
 
 		return pane;

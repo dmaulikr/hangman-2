@@ -25,8 +25,6 @@ client:
   serverIp: 'Server IP'
   login:
     title: 'Login'
-    username: 'Username'
-    password: 'Password'
     errors:
       username_not_found: 'Username not found.'
       wrong_password: 'Wrong password.'
@@ -34,6 +32,7 @@ client:
   logout: 'Logout'
   register:
     title: 'Register'
+    password: 'Password'
     repeat_password: 'Repeat Password'
     success: 'Successfully registered. You can login now.'
     errors:
@@ -42,5 +41,17 @@ client:
       username_empty: 'Your username cannot be empty.'
   lobby:
     title: 'Lobby'
+game:
   profile:
     title: 'Profile'
+    username: 'Username'
+    avatar:
+      label: 'Avatar URL'
+      hint: 'Insert your avatar URL'
+      select: 'Or select one of the defaults:'
+    points:
+      label: 'Points'
+      hint: 'blah points'
+    grimoire:
+      label: 'Grimoire'
+      hint: 'blah grimoire'

@@ -42,7 +42,7 @@ public abstract class DefaultScene {
 
     }
 
-    public StateChangeButton stateChangeButtonwithEvent(String text, EventHandler<ActionEvent> event) {
+    public StateChangeButton stateChangeButtonWithEvent(String text, EventHandler<ActionEvent> event) {
         return new StateChangeButton(text, event);
     }
 

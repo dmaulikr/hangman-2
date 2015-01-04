@@ -10,14 +10,14 @@ public class PlayerChartDrawing extends Drawing {
 
 	private String name;
 
-	private int avatarCode;
+	private String avatar;
 	private int lives, points;
 	private double mana;
 
 	public PlayerChartDrawing(Player p) {
 		super(p.getColor());
 		this.name = p.getProfile().getUsername();
-		this.avatarCode = p.getProfile().getAvatarCode();
+		this.avatar = p.getProfile().getAvatar();
 		this.lives = p.getLives();
 		this.mana = p.getMana();
 	}

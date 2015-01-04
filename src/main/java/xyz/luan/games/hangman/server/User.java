@@ -21,8 +21,7 @@ public class User implements Serializable, Comparable<User> {
 	private transient boolean loggedIn = false;
 
 	public User(String username, String passwordHash) {
-		int defaultAvatar = 1; // TODO create configuration for this
-		this.profile = new Profile(username, defaultAvatar);
+		this.profile = new Profile(username);
 		this.passwordHash = passwordHash;
 	}
 

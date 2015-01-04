@@ -37,7 +37,7 @@ public abstract class DefaultForm extends DefaultScene {
         }
 
         grid.add(cancelButton(), 0, components.length + 2);
-        grid.add(stateChangeButtonwithEvent("common.save", event -> {
+        grid.add(stateChangeButtonWithEvent("common.save", event -> {
             this.errors.setText("");
             boolean allOk = true;
             for (int i = 0; i < fields.length; i++) {

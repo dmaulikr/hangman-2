@@ -56,11 +56,11 @@ public class LoginScene extends ClientScene {
 	}
 
 	private void createFormFields(GridPane pane) {
-		pane.add(new Label(I18n.t("client.login.username")), 0, 2);
+		pane.add(new Label(I18n.t("game.profile.username")), 0, 2);
 		username = new TextField();
 		pane.add(username, 1, 2);
 
-		pane.add(new Label(I18n.t("client.login.password")), 0, 3);
+		pane.add(new Label(I18n.t("client.register.password")), 0, 3);
 		password = new PasswordField();
 		pane.add(password, 1, 3);
 	}

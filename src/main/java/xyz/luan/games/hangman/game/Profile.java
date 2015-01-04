@@ -15,7 +15,7 @@ public class Profile implements Serializable {
 	private static final long serialVersionUID = -5583798152789871501L;
 
 	private String username;
-	private int avatarCode;
+	private String avatar;
 
 	private int points;
 	private Set<Spell> grimoire;
@@ -23,9 +23,9 @@ public class Profile implements Serializable {
 
 	private ProfileStatuses statuses;
 
-	public Profile(String username, int avatarCode) {
+	public Profile(String username) {
 		this.username = username;
-		this.avatarCode = avatarCode;
+		this.avatar = "hangman://default";
 
 		this.grimoire = new HashSet<>();
 		this.selectedSpells = new ArrayList<>();
