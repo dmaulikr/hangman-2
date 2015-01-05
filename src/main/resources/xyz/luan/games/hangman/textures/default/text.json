@@ -1,0 +1,44 @@
+[
+  {
+    "font" : "GAME_TITLE",
+    "file" : "bold.ttf",
+    "size" : 48.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "TITLE",
+    "file" : "bold.ttf",
+    "size" : 24.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "LETTER",
+    "file" : "bold.ttf",
+    "size" : 24.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "BUTTON",
+    "file" : "regular.ttf",
+    "size" : 16.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "FORM_LABEL",
+    "file" : "regular.ttf",
+    "size" : 16.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "PLAYER_CARD",
+    "file" : "regular.ttf",
+    "size" : 24.0,
+    "color" : "#000000"
+  },
+  {
+    "font" : "TEXT",
+    "file" : "regular.ttf",
+    "size" : 16.0,
+    "color" : "#000000"
+  }
+]

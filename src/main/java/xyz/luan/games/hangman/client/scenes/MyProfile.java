@@ -1,6 +1,9 @@
 package xyz.luan.games.hangman.client.scenes;
 
-import javafx.geometry.Insets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,13 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import xyz.luan.games.hangman.client.ClientStatus;
+import xyz.luan.games.hangman.drawing.PlayerCard;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.game.forms.FormUtils;
@@ -24,12 +26,15 @@ import xyz.luan.games.hangman.game.forms.Hint;
 import xyz.luan.games.hangman.messaging.client.UpdateProfileRequest;
 import xyz.luan.games.hangman.spells.Spell;
 import xyz.luan.games.hangman.texture.DefaultAvatar;
+import xyz.luan.games.hangman.texture.FxHelper;
 import xyz.luan.games.hangman.texture.PackManager;
+import xyz.luan.games.hangman.texture.TextType;
 
 public class MyProfile extends ClientScene {
 
 	private Label status;
 	private TextField avatarUrl;
+	private List<SpellBox> boxes;
 
 	public void setError(String message) {
 		this.status.setText(message);
@@ -45,17 +50,16 @@ public class MyProfile extends ClientScene {
 
 		pane.add(status = new Label(), 0, line++, 2, 1);
 
-		pane.add(new Label(I18n.t("game.profile.username")), 0, line);
-		pane.add(new Label(profile().getUsername()), 1, line++);
+		pane.add(new PlayerCard(profile()), 0, line++, 2, 1);
 
 		pane.add(new Hint("game.profile.avatar"), 0, line);
 		pane.add(avatarUrl(), 1, line++);
 
-		pane.add(new Label(I18n.t("game.profile.avatar.select")), 0, line++, 2, 1);
+		pane.add(FxHelper.createLabel(TextType.FORM_LABEL, "game.profile.avatar.select"), 0, line++, 2, 1);
 		pane.add(defaultAvatars(), 0, line++, 2, 1);
 
 		pane.add(new Hint("game.profile.points"), 0, line);
-		pane.add(new Label(String.valueOf(profile().getPoints())), 1, line++);
+		pane.add(FxHelper.createRawLabel(TextType.FORM_LABEL, String.valueOf(profile().getPoints())), 1, line++);
 
 		pane.add(new Hint("game.profile.grimoire"), 0, line++, 2, 1);
 		pane.add(grimoire(), 0, line++, 2, 1);
@@ -67,12 +71,11 @@ public class MyProfile extends ClientScene {
 	}
 
 	private TextField avatarUrl() {
-		avatarUrl = new TextField();
+		avatarUrl = FxHelper.createTextField();
 		avatarUrl.setText(profile().getAvatar());
 		return avatarUrl;
 	}
 
-	/* TODO due to eclipse's bug [456481] can't use method inner classes inside methods inside lambdas. This should be inside defaultAvatars() method */
 	private class AvatarBox extends Label {
 
 		public AvatarBox(DefaultAvatar avatar) {
@@ -88,57 +91,59 @@ public class MyProfile extends ClientScene {
 		return pane;
 	}
 
-	private Node grimoire() {
-		class SpellBox extends Label {
+	private class SpellBox extends Label {
 
-			private Spell spell;
+		private Spell spell;
+		private boolean selected;
 
-			public SpellBox(Spell spell) {
-				this.spell = spell;
-				setupDisplay(spell);
-				setupAction(spell);
-				update();
-			}
-
-			private void setupAction(Spell spell) {
-				this.setOnMouseClicked((e) -> {
-					if (selected()) {
-						profile().getSelectedSpells().remove(spell);
-					} else {
-						profile().getSelectedSpells().add(spell);
-					}
-					update();
-				});
-			}
-
-			private void setupDisplay(Spell spell) {
-				setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-				setGraphic(new ImageView(PackManager.pack().getSpellIcon(spell)));
-				setTooltip(new Tooltip(spell.getName()));
-			}
-
-			public boolean selected() {
-				return profile().getSelectedSpells().contains(spell);
-			}
-
-			public void update() {
-				setStyle(selected() ? "-fx-border-color: red;" : "");
-			}
+		public SpellBox(Spell spell) {
+			this.spell = spell;
+			this.selected = profile().getSelectedSpells().contains(spell);
+			setupDisplay(spell);
+			setupAction(spell);
+			update();
 		}
+
+		private void setupAction(Spell spell) {
+			this.setOnMouseClicked((e) -> {
+				selected = !selected;
+				update();
+			});
+		}
+
+		private void setupDisplay(Spell spell) {
+			setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			setGraphic(new ImageView(PackManager.pack().getSpellIcon(spell)));
+			setTooltip(new Tooltip(spell.getName()));
+		}
+
+		public boolean selected() {
+			return selected;
+		}
+
+		public void update() {
+			setStyle(selected() ? "-fx-border-color: red;" : "");
+		}
+	}
+
+	private Node grimoire() {
 
 		GridPane grimoire = new GridPane();
 		grimoire.setAlignment(Pos.CENTER);
 		grimoire.setHgap(5);
 		grimoire.setVgap(5);
 		if (profile().getGrimoire().isEmpty()) {
-			grimoire.add(new Label(I18n.t("game.profile.grimoire.empty")), 0, 0);
+			grimoire.add(FxHelper.createLabel(TextType.TEXT, "game.profile.grimoire.empty"), 0, 0);
 			return grimoire;
 		}
 
+		boxes = new ArrayList<>();
 		final int perRow = 8;
 		int count = 0;
 		for (Spell spell : profile().getGrimoire()) {
-			grimoire.add(new SpellBox(spell), count % perRow, count / perRow);
+			SpellBox box = new SpellBox(spell);
+			boxes.add(box);
+			grimoire.add(box, count % perRow, count / perRow);
 			count++;
 		}
 
@@ -150,18 +155,21 @@ public class MyProfile extends ClientScene {
 	}
 
 	private Button saveButton() {
-		Button saveButton = new Button(I18n.t("common.save"));
+		Button saveButton = FxHelper.createButton("common.save");
 		saveButton.setOnAction(e -> {
-			status.setText("");
-			client.sendMessage(new UpdateProfileRequest(avatarUrl.getText(), profile().getSelectedSpells()));
+			sendUpdateMessage();
 			status.setText(I18n.t("common.loading"));
 		});
 		return saveButton;
 	}
 
+	private void sendUpdateMessage() {
+		List<Spell> newSelectedSpells = boxes.stream().filter(b -> b.selected).map(b -> b.spell).collect(Collectors.toList());
+		String newAvatar = avatarUrl.getText();
+		client.sendMessage(new UpdateProfileRequest(newAvatar, newSelectedSpells));
+	}
+
 	private void createTitle(GridPane pane) {
-		Text sceneTitle = new Text(I18n.t("game.profile.title"));
-		sceneTitle.getStyleClass().add("title");
-		pane.add(sceneTitle, 0, 0, 2, 1);
+		pane.add(FxHelper.createLabel(TextType.TITLE, "game.profile.title"), 0, 0, 2, 1);
 	}
 }

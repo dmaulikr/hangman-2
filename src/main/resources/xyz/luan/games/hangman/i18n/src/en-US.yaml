@@ -22,6 +22,10 @@ host:
   config: 'Host config'
   host: 'Host'
   stop: 'Stop'
+  hosting: 'Hosting...'
+  my_ip: 'My IP'
+  port: 'Port'
+  clients_connected: 'Clients connected:'
   unknown_user: 'Unidentified user'
   options:
     maxSelectedSpells: 'Max selected spells'

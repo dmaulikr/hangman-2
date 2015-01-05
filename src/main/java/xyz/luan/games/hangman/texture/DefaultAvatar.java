@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javafx.scene.image.Image;
 import xyz.luan.games.hangman.texture.TexturePack.BadPackException;
+import xyz.luan.games.hangman.texture.TileManager.TileType;
 
 public enum DefaultAvatar {
 
@@ -27,7 +28,7 @@ public enum DefaultAvatar {
 			if (stream == null) {
 				throw new BadPackException("Default avatar " + t.name + " in avatars/ folder was not found.");
 			}
-			avatars.put(t, new Image(stream));
+			avatars.put(t, TileManager.createTile(TileType.AVATAR, stream));
 		}
 		return avatars;
 	}

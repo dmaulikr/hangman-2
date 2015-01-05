@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.luan.games.hangman.texture.TileManager.TileType;
 import javafx.scene.image.Image;
 import lombok.Data;
 
@@ -68,8 +69,8 @@ public class SpellIcon implements Serializable {
 		Map<SpellIcon, Image> spellIcons = new HashMap<>();
 		Type.types().forEach(t -> t.colors.forEach(c -> LEVELS.forEach(l -> {
 			SpellIcon icon = new SpellIcon(t, c, l);
-			spellIcons.put(icon, new Image(path + "/" + icon.getName(), 32, 32, true, true)); // TODO << tileSize actually
-			})));
+			spellIcons.put(icon, TileManager.createTile(TileType.SPELL, path + "/" + icon.getName()));
+		})));
 		return spellIcons;
 	}
 

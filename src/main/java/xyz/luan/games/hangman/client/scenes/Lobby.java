@@ -15,6 +15,8 @@ import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.messaging.client.LogoutMessage;
+import xyz.luan.games.hangman.texture.FxHelper;
+import xyz.luan.games.hangman.texture.TextType;
 
 public class Lobby extends ClientScene {
 
@@ -25,7 +27,7 @@ public class Lobby extends ClientScene {
 	protected Pane generatePane() {
 		GridPane pane = FormUtils.defaultGrid();
 
-		pane.add(new Label("it fucking works, bob!"), 0, 0);
+		pane.add(FxHelper.createRawLabel(TextType.TEXT, "it fucking works, bob!"), 0, 0);
 		pane.add(logoutButton(), 0, 1);
 		pane.add(new StateChangeButton("game.profile.title", ClientStatus.PROFILE), 0, 2);
 		pane.add(loggedUsersView(), 0, 3);
@@ -39,7 +41,7 @@ public class Lobby extends ClientScene {
 	}
 
 	private Button logoutButton() {
-		Button logout = new Button(I18n.t("client.logout"));
+		Button logout = FxHelper.createButton("client.logout");
 		logout.setOnAction((e) -> {
 			client.sendMessage(new LogoutMessage());
 		});

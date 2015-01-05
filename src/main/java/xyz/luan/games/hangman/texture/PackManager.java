@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.texture.TexturePack.BadPackException;
 
 import com.eclipsesource.json.JsonArray;

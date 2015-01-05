@@ -20,6 +20,8 @@ import xyz.luan.games.hangman.game.forms.DialogHelper;
 import xyz.luan.games.hangman.game.forms.FormUtils;
 import xyz.luan.games.hangman.server.Server;
 import xyz.luan.games.hangman.server.Server.ClientHandler;
+import xyz.luan.games.hangman.texture.FxHelper;
+import xyz.luan.games.hangman.texture.TextType;
 
 public class HostServerScene extends DefaultScene {
 
@@ -37,25 +39,23 @@ public class HostServerScene extends DefaultScene {
 	protected Pane generatePane() {
 		GridPane grid = FormUtils.defaultGrid();
 
-		Text sceneTitle = new Text(I18n.t("main.menu.host"));
-		sceneTitle.getStyleClass().add("title");
-		grid.add(sceneTitle, 0, 0, 2, 1);
+		grid.add(FxHelper.createLabel(TextType.TITLE, "main.menu.host"), 0, 0, 2, 1);
 
-		grid.add(new Label("My IP:"), 0, 1);
-		grid.add(new Label(getMyIp()), 1, 1);
+		grid.add(FxHelper.createLabel(TextType.FORM_LABEL, "host.my_ip"), 0, 1);
+		grid.add(FxHelper.createRawLabel(TextType.FORM_LABEL, getMyIp()), 1, 1);
 
-		grid.add(new Label("Port:"), 0, 2);
+		grid.add(FxHelper.createLabel(TextType.FORM_LABEL, "host.port"), 0, 2);
 		portText = new TextField(String.valueOf(ConfigManager.general.config().getPort()));
 		grid.add(portText, 1, 2);
 
-		hostButton = new Button();
+		hostButton = FxHelper.createEmptyButton();
 		setupHostButtonForStart();
 		grid.add(hostButton, 0, 3);
 
 		cancelButton = new StateChangeButton("common.cancel", MainGameStatus.MAIN_MENU);
 		grid.add(cancelButton, 1, 3);
 
-		status = new Label();
+		status = FxHelper.createEmptyLabel(TextType.FORM_LABEL);
 		grid.add(status, 0, 4, 2, 1);
 
 		setupHostingDataPane(grid);
@@ -66,7 +66,7 @@ public class HostServerScene extends DefaultScene {
 	private void setupHostingDataPane(GridPane grid) {
 		hostingDataPane = FormUtils.defaultGrid();
 		hostingDataPane.setVisible(false);
-		hostingDataPane.add(new Label("Clients connectd:"), 0, 0);
+		hostingDataPane.add(FxHelper.createLabel(TextType.TEXT, "host.clients_connected"), 0, 0);
 		hostingDataPane.add(listView = new ListView<>(), 0, 1);
 		grid.add(hostingDataPane, 0, 5, 2, 1);
 	}
@@ -93,7 +93,7 @@ public class HostServerScene extends DefaultScene {
 				startServer(port);
 				setupHostButtonForStop();
 				hostingDataPane.setVisible(true);
-				status.setText("Hosting...");
+				status.setText(I18n.t("host.hosting"));
 				cancelButton.setDisable(true);
 			} catch (NumberFormatException ex) {
 				DialogHelper.show("Error!", "Port must be an integer.");

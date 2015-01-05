@@ -5,8 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import xyz.luan.games.hangman.game.I18n;
+import xyz.luan.games.hangman.texture.FxHelper;
 import xyz.luan.games.hangman.texture.IconType;
 import xyz.luan.games.hangman.texture.PackManager;
+import xyz.luan.games.hangman.texture.TextType;
 
 public class Hint extends Label {
 
@@ -15,6 +17,8 @@ public class Hint extends Label {
 		setContentDisplay(ContentDisplay.RIGHT);
 		setGraphic(new ImageView(PackManager.pack().getIcon(IconType.HELP)));
 		setTooltip(new Tooltip(hint));
+
+		FxHelper.setupLabel(TextType.FORM_LABEL, this);
 	}
 
 	public Hint(String bundle) {

@@ -9,6 +9,10 @@ import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.game.GameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Main;
+import xyz.luan.games.hangman.texture.FxHelper;
+import xyz.luan.games.hangman.texture.PackManager;
+import xyz.luan.games.hangman.texture.TextType;
+import xyz.luan.games.hangman.texture.TextType.TextTypeReference;
 
 public abstract class DefaultScene {
 
@@ -36,6 +40,7 @@ public abstract class DefaultScene {
 
 		private void setup(String text, EventHandler<ActionEvent> event) {
 			this.setText(I18n.t(text));
+			FxHelper.setupButton(this);
 			this.setMaxSize(Double.MAX_VALUE, this.getHeight());
 			this.setOnAction(event);
 		}
