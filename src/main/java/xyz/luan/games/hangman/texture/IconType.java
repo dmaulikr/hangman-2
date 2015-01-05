@@ -11,7 +11,10 @@ import xyz.luan.games.hangman.texture.TexturePack.BadPackException;
 public enum IconType {
 
 	HELP("help.png"),
-	STAR("star.png");
+	STAR("star.png"),
+	DUEL("duel.png"),
+	MESSAGE("message.png"),
+	FRIEND("friend.png");
 
 	private String name;
 

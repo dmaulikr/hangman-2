@@ -35,15 +35,22 @@ public class PlayerCard extends GridPane {
 		return label;
 	}
 
+	private static final int hgap = 10;
+	private static final int inset = 2;
+
 	private void setProperties() {
 		setStyle("-fx-border-color: black;");
 		setAlignment(Pos.CENTER);
-		setPadding(new Insets(2, 2, 2, 2));
+		setHgap(hgap);
+		setPadding(new Insets(inset, inset, inset, inset));
 		setColumnWidths();
 	}
 
 	private void setColumnWidths() {
-		int totalWidth = (TileType.AVATAR.getSize() + 10) * 3;
+		int totalWidth = TileType.AVATAR.getSize() * 3 + 2 * inset + hgap;
+		int totalHeight = TileType.AVATAR.getSize() + 2 * inset;
+		setMinHeight(totalHeight);
+		setMaxHeight(totalHeight);
 		setMinWidth(totalWidth);
 		setMaxWidth(totalWidth);
 		ColumnConstraints avatarColumn = new ColumnConstraints();

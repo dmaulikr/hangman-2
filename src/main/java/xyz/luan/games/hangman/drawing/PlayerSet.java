@@ -22,7 +22,7 @@ public class PlayerSet extends GridPane {
 		getChildren().clear();
 		int count = 0;
 		for (Profile player : players) {
-			add(new PlayerCard(player), count % PER_ROW, count / PER_ROW);
+			add(new ExtendedPlayerCard(player), count % PER_ROW, count / PER_ROW);
 			count++;
 		}
 	}

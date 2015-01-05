@@ -1,8 +1,11 @@
 package xyz.luan.games.hangman.texture;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.texture.TextType.TextTypeReference;
 
@@ -60,5 +63,12 @@ public final class FxHelper {
 		TextTypeReference reference = PackManager.pack().getReference(TextType.FORM_LABEL);
 		field.setFont(reference.getFont());
 		// TODO set color
+	}
+
+	public static Label createImageLabel(Image icon) {
+		Label label = new Label();
+		label.setGraphic(new ImageView(icon));
+		label.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		return label;
 	}
 }
