@@ -9,7 +9,9 @@ import javafx.scene.image.Image;
 import xyz.luan.games.hangman.texture.TexturePack.BadPackException;
 
 public enum IconType {
-	HELP("help.png");
+
+	HELP("help.png"),
+	STAR("star.png");
 
 	private String name;
 

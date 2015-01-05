@@ -3,6 +3,7 @@ package xyz.luan.games.hangman.messaging.client;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import xyz.luan.games.hangman.client.Client;
 import xyz.luan.games.hangman.client.ClientStatus;
 import xyz.luan.games.hangman.client.scenes.MyProfile;
@@ -28,7 +29,9 @@ public class UpdateProfileRequest implements ClientMessage {
 		}
 	}
 
-	private static class UpdateProfileNotification implements ServerMessage {
+	public static class UpdateProfileNotification implements ServerMessage {
+
+		@Getter
 		private Profile profile;
 
 		private UpdateProfileNotification(Profile profile) {

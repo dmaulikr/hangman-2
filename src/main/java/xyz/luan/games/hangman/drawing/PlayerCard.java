@@ -1,6 +1,8 @@
 package xyz.luan.games.hangman.drawing;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,6 +10,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.texture.FxHelper;
+import xyz.luan.games.hangman.texture.IconType;
 import xyz.luan.games.hangman.texture.TextType;
 import xyz.luan.games.hangman.texture.PackManager;
 import xyz.luan.games.hangman.texture.TileManager.TileType;
@@ -22,12 +25,20 @@ public class PlayerCard extends GridPane {
 	private void createFields(Profile profile) {
 		add(new ImageView(PackManager.pack().getAvatar(profile.getAvatar())), 0, 0, 1, 2);
 		add(FxHelper.createRawLabel(TextType.PLAYER_CARD, profile.getUsername()), 1, 0);
-		add(FxHelper.createRawLabel(TextType.PLAYER_CARD, String.valueOf(profile.getPoints())), 1, 1);
+		add(pointsLabel(profile), 1, 1);
+	}
+
+	private Label pointsLabel(Profile profile) {
+		Label label = FxHelper.createRawLabel(TextType.PLAYER_CARD, String.valueOf(profile.getPoints()));
+		label.setGraphic(new ImageView(PackManager.pack().getIcon(IconType.STAR)));
+		label.setContentDisplay(ContentDisplay.LEFT);
+		return label;
 	}
 
 	private void setProperties() {
-		setStyle("-fx-border-color: red;");
+		setStyle("-fx-border-color: black;");
 		setAlignment(Pos.CENTER);
+		setPadding(new Insets(2, 2, 2, 2));
 		setColumnWidths();
 	}
 

@@ -1,5 +1,14 @@
 package xyz.luan.games.hangman.game.scenes;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -9,10 +18,8 @@ import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.game.GameStatus;
 import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Main;
+import xyz.luan.games.hangman.messaging.server.ServerMessage;
 import xyz.luan.games.hangman.texture.FxHelper;
-import xyz.luan.games.hangman.texture.PackManager;
-import xyz.luan.games.hangman.texture.TextType;
-import xyz.luan.games.hangman.texture.TextType.TextTypeReference;
 
 public abstract class DefaultScene {
 
@@ -51,6 +58,27 @@ public abstract class DefaultScene {
 		return new StateChangeButton(text, event);
 	}
 
+	/**
+	 * Hook, to be overwritten
+	 */
 	public void closed() {
+	}
+
+	public void consume(ServerMessage message) {
+		Predicate<? super Method> isMessageHandler = m -> m.getAnnotation(MessageHandler.class) != null;
+		Predicate<? super Method> isHandlerForMessage = m -> m.getParameters().length == 1
+				&& m.getParameters()[0].getType().isAssignableFrom(message.getClass());
+		Arrays.stream(this.getClass().getDeclaredMethods()).filter(isMessageHandler).filter(isHandlerForMessage).forEach(m -> {
+			try {
+				m.invoke(this, message);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
+
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface MessageHandler {
 	}
 }

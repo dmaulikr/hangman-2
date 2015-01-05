@@ -62,6 +62,7 @@ public class Client extends Thread {
 	private void processMessage(ServerMessage message) {
 		Platform.runLater(() -> {
 			message.handle(this);
+			mainRef.getScene().consume(message);
 		});
 	}
 
