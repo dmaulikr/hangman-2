@@ -1,5 +1,6 @@
 package xyz.luan.games.hangman.texture;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.image.Image;
@@ -8,6 +9,8 @@ import xyz.luan.games.hangman.texture.TextType.TextTypeReference;
 import xyz.luan.games.hangman.texture.TileManager.TileType;
 
 public class TexturePack {
+
+	private static Map<String, Image> avatarCache = new HashMap<>();
 
 	private Map<TextType, TextTypeReference> textMapping;
 	private Map<IconType, Image> icons;
@@ -27,11 +30,27 @@ public class TexturePack {
 	}
 
 	public Image getAvatar(String url) {
+		if (avatarCache.get(url) != null) {
+			return avatarCache.get(url);
+		}
+		Image avatar = fetchAvatar(url);
+		avatarCache.put(url, avatar);
+		return avatar;
+	}
+
+	private Image fetchAvatar(String url) {
 		final String defaultAvatarProtocol = "hangman://";
 		if (url.startsWith(defaultAvatarProtocol)) {
 			return defaultAvatars.get(DefaultAvatar.get(url.substring(defaultAvatarProtocol.length())));
 		}
-		return TileManager.createTile(TileType.AVATAR, url);
+		try {
+			if (!url.contains("://")) {
+				url = "http://" + url;
+			}
+			return TileManager.createTile(TileType.AVATAR, url);
+		} catch (IllegalArgumentException ex) {
+			return defaultAvatars.get(DefaultAvatar.UNKNOWN);
+		}
 	}
 
 	public Image getIcon(IconType type) {
