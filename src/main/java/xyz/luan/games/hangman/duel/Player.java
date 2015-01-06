@@ -2,10 +2,6 @@ package xyz.luan.games.hangman.duel;
 
 import java.util.List;
 
-import xyz.luan.games.hangman.drawing.Drawing;
-import xyz.luan.games.hangman.drawing.PlayerColor;
-import xyz.luan.games.hangman.drawing.Screen;
-import xyz.luan.games.hangman.drawing.SpellDrawing;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.spells.Spell;
 
@@ -20,12 +16,7 @@ public class Player {
     private double mana;
     private int lives;
 
-    private PlayerColor color;
-
-    // synced drawings
-    private Screen screen;
-
-    public Player(DuelOptions options, Profile profile, PlayerColor color, List<Spell> spells) {
+    public Player(DuelOptions options, Profile profile, List<Spell> spells) {
         if (spells.size() > options.getSpellSize()) {
             throw new IllegalArgumentException("Must have at max " + options.getSpellSize() + " spells");
         }
@@ -35,7 +26,6 @@ public class Player {
             this.spells[i] = spells.get(i);
         }
 
-        this.color = color;
         this.profile = profile;
 
         this.mana = options.getStartingMana();
@@ -44,16 +34,8 @@ public class Player {
         this.keyboard = Letter.getKeyboard(this);
     }
 
-    public void setupDrawings(Duel duel) {
-        this.screen = new Screen(duel, this);
-    }
-
     public Profile getProfile() {
         return this.profile;
-    }
-
-    public PlayerColor getColor() {
-        return color;
     }
 
     public int getLives() {
@@ -62,27 +44,6 @@ public class Player {
 
     public double getMana() {
         return this.mana;
-    }
-
-    public Drawing[] getDrawingsForSpells(Player p) {
-        Drawing[] results = new Drawing[spells.length];
-        for (int i = 0; i < spells.length; i++) {
-            if (spells[i] == null) {
-                results[i] = null;
-            } else {
-                results[i] = new SpellDrawing(color, (spellStatus[i] == Letter.Status.REVEALED || p == this) ? spells[i] : null,
-                        spellStatus[i]);
-            }
-        }
-        return results;
-    }
-
-    public Drawing[] getDrawingsForKeyboard() {
-        Drawing[] results = new Drawing[keyboard.length];
-        for (int i = 0; i < keyboard.length; i++) {
-            results[i] = keyboard[i].getDrawing();
-        }
-        return results;
     }
 
 }

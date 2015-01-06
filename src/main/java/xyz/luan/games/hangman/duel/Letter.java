@@ -1,8 +1,5 @@
 package xyz.luan.games.hangman.duel;
 
-import xyz.luan.games.hangman.drawing.Drawing;
-import xyz.luan.games.hangman.drawing.LetterDrawing;
-
 public class Letter {
 
     public static final int SIZE = 32;
@@ -68,7 +65,4 @@ public class Letter {
         return this.status == Status.REVEALED;
     }
 
-    public Drawing getDrawing() {
-        return new LetterDrawing(owner.getColor(), revealed() ? new Character(letter) : null, status);
-    }
 }

@@ -1,18 +1,11 @@
 package xyz.luan.games.hangman.duel;
 
-import xyz.luan.games.hangman.drawing.PlayerColor;
 
 public class DuelOptions {
 
     private int startingLives;
     private double startingMana;
     private int spellSize;
-
-    private PlayerColor[] colorOrder;
-
-    public PlayerColor[] getColorOrder() {
-        return this.colorOrder;
-    }
 
     public int getStartingLives() {
         return this.startingLives;
