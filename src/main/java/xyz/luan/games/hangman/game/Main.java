@@ -72,7 +72,7 @@ public class Main extends Application {
 	}
 
 	public void disconnect() {
-		this.clientRef.quit();
+		this.clientRef.dispose();
 		this.clientRef = null;
 	}
 

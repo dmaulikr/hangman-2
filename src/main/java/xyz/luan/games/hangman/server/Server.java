@@ -23,7 +23,6 @@ import xyz.luan.games.hangman.game.I18n;
 import xyz.luan.games.hangman.game.Profile;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
 import xyz.luan.games.hangman.messaging.server.GenericErrorMessage;
-import xyz.luan.games.hangman.messaging.server.QuitMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
 import xyz.luan.games.hangman.messaging.server.UserLoginNotification;
 import xyz.luan.games.hangman.messaging.server.UserLogoutNotification;
@@ -74,7 +73,7 @@ public final class Server extends Thread {
 	}
 
 	public void quit() {
-		handlers.stream().forEach(c -> c.notifyQuit());
+		handlers.stream().forEach(c -> c.stopConnection());
 		closeConnection();
 	}
 
@@ -120,7 +119,7 @@ public final class Server extends Thread {
 				try {
 					ClientMessage m = readMessage();
 					processMessage(m);
-				} catch (EOFException clientQuitted) {
+				} catch (ClientDownException clientQuitted) {
 					quit();
 				} catch (InvalidCommunicationException ex) {
 					handleError(ex);
@@ -156,14 +155,17 @@ public final class Server extends Thread {
 			}
 		}
 
-		private ClientMessage readMessage() throws EOFException, InvalidCommunicationException {
+		private ClientMessage readMessage() throws ClientDownException, InvalidCommunicationException {
 			try {
 				return (ClientMessage) in.readObject();
-			} catch (EOFException clientQuitted) {
-				throw clientQuitted;
+			} catch (EOFException | SocketException clientQuitted) {
+				throw new ClientDownException();
 			} catch (IOException | ClassCastException | ClassNotFoundException e) {
 				throw new InvalidCommunicationException("", e);
 			}
+		}
+
+		private class ClientDownException extends Exception {
 		}
 
 		private class InvalidCommunicationException extends Exception {
@@ -174,12 +176,7 @@ public final class Server extends Thread {
 			}
 		}
 
-		public void notifyQuit() {
-			this.sendMessage(new QuitMessage());
-			stopConnection();
-		}
-
-		private void stopConnection() {
+		public void stopConnection() {
 			this.running = false;
 			try {
 				this.in.close();

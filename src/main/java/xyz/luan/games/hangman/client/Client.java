@@ -1,5 +1,6 @@
 package xyz.luan.games.hangman.client;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import xyz.luan.games.hangman.client.scenes.ClientScene;
 import xyz.luan.games.hangman.game.ConfigManager;
 import xyz.luan.games.hangman.game.Main;
+import xyz.luan.games.hangman.game.MainGameStatus;
+import xyz.luan.games.hangman.game.forms.DialogHelper;
 import xyz.luan.games.hangman.messaging.client.ClientMessage;
 import xyz.luan.games.hangman.messaging.server.ServerMessage;
 
@@ -49,8 +52,8 @@ public class Client extends Thread {
 		while (running) {
 			try {
 				processMessage(readMessage());
-			} catch (SocketException quitted) {
-				this.running = false;
+			} catch (ServerDownException quitted) {
+				exit();
 			}
 		}
 	}
@@ -75,14 +78,17 @@ public class Client extends Thread {
 		}
 	}
 
-	private ServerMessage readMessage() throws SocketException {
+	private ServerMessage readMessage() throws ServerDownException {
 		try {
 			return (ServerMessage) in.readObject();
-		} catch (SocketException quitted) {
-			throw quitted;
+		} catch (EOFException | SocketException clientQuitted) {
+			throw new ServerDownException();
 		} catch (ClassNotFoundException | IOException e) {
 			throw new RuntimeException(e); // TODO handle properly
 		}
+	}
+
+	private class ServerDownException extends Exception {
 	}
 
 	private static Socket getSocket(String ip) throws UnknownHostException, IOException {
@@ -108,7 +114,15 @@ public class Client extends Thread {
 		return (ClientScene) mainRef.getScene();
 	}
 
-	public void quit() {
+	public void exit() {
+		dispose();
+		Platform.runLater(() -> {
+			mainRef.setStatus(MainGameStatus.CONNECT_TO_SERVER);
+			DialogHelper.show("Error", "Server is down!"); // TODO i18n
+		});
+	}
+
+	public void dispose() {
 		this.running = false;
 		try {
 			this.in.close();

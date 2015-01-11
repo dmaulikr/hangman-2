@@ -13,7 +13,7 @@ public abstract class ClientScene extends DefaultScene {
 
 	@Override
 	public void closed() {
-		client.quit();
+		client.dispose();
 	}
 
 	public <T extends ClientScene> void perform(Class<T> clazz, Consumer<T> consumer) {
